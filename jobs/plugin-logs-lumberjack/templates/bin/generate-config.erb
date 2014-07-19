@@ -1,0 +1,103 @@
+#!/var/vcap/bosh/bin/ruby
+
+require 'json'
+require 'yaml'
+
+realconf = {}
+
+baseconf = []
+<% [ 'plugin.logs._builtin_defaults', 'plugin.logs.lumberjack._builtin_defaults', 'plugin.logs._defaults', 'plugin.logs.lumberjack._defaults' ].each do | key | %><% if_p(key) do | yaml | %>
+baseconf.push YAML.load <<ENDCONF
+<%= yaml %>
+ENDCONF
+<% end %><% end %>
+
+Dir.glob('/var/vcap/jobs/*/plugin/logs/config.yml') do | path |
+  baseconf.push YAML.load_file(path)
+end
+
+<% [ 'plugin.logs._overrides', 'plugin.logs.lumberjack._overrides' ].each do | key | %><% if_p(key) do | yaml | %>
+baseconf.push YAML.load <<ENDCONF
+<%= yaml %>
+ENDCONF
+<% end %><% end %>
+
+baseconf.each do | config |
+    config['files'].each do | relpath, value |
+        if '/' == relpath[0]
+            abspath = relpath
+        else
+            abspath = "/var/vcap/sys/log/#{relpath}"
+        end
+
+        Dir.glob(abspath) do | path |
+            if nil == value
+                realconf[path] = nil
+            elsif not realconf.has_key?(path) or not realconf[path].nil?
+                if realconf.has_key? path
+                    defconf = realconf[path]
+                else
+                    defconf = {}
+                    defconf['fields'] = {}
+                end
+
+                defconf['fields'].merge! value['fields']
+
+                realconf[path] = defconf
+            end
+        end
+    end
+end
+
+config = {
+    'network' => {
+        'servers' => <%= p('plugin.logs.lumberjack.servers') %>,
+        <% if_p('plugin.logs.lumberjack.ssl_certificate') do | v | %>'ssl certificate' => '/var/vcap/jobs/plugin-logs-lumberjack/etc/ssl.crt',<% end %>
+        <% if_p('plugin.logs.lumberjack.ssl_key') do | v | %>'ssl key' => '/var/vcap/jobs/plugin-logs-lumberjack/etc/ssl.key',<% end %>
+        <% if_p('plugin.logs.lumberjack.ssl_ca_certificate') do | v | %>'ssl ca' => '/var/vcap/jobs/plugin-logs-lumberjack/etc/ssl-ca.crt',<% end %>
+    },
+    'files' => [],
+}
+
+realconf.each do | path, value |
+    if value.nil?
+        next
+    end
+
+    fields = {}
+
+    value['fields'].each do | field_key, field_value |
+        file_template = ''
+        path.match(%r"^/var/vcap/sys/log/([^/]+)/.+$") do | m |
+            file_template = m[1]
+        end
+
+        {
+            'deployment' => '<%= spec.deployment %>',
+            'index' => '<%= index %>',
+            'job' => '<%= name %>',
+            'file_path' => path,
+            'file_template' => file_template
+        }.each do | sub_key, sub_value |
+            field_value = field_value.sub "{{#{sub_key}}}", sub_value
+        end
+
+        if not field_value.nil? and '' != field_value
+            fields["<%= p('plugin.logs.lumberjack.field_prefix', '') %>#{field_key}"] = field_value
+        end
+    end
+
+    append = {
+        'paths' => [
+            path,
+        ],
+    }
+
+    if 0 < fields.length
+        append['fields'] = fields
+    end
+
+    config['files'].push append
+end
+
+$stdout.puts JSON.pretty_generate(config)

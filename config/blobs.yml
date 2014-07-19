@@ -1,0 +1,25 @@
+---
+source/apr-1.5.1.tar.gz:
+  object_id: 6b6b4ae6-fbe6-44a4-8c1f-4141818a06c8
+  sha: 9caa83e3f50f3abc9fab7c4a3f2739a12b14c3a3
+  size: 1020833
+source/expat-2.1.0.tar.gz:
+  object_id: 026d9d75-d181-46fe-a0d2-a07191d2c1c4
+  sha: b08197d146930a5543a7b99e871cba3da614f6f0
+  size: 562616
+source/logstash-forwarder--69142e788f.zip:
+  object_id: 7f21eabc-3648-44ed-a84b-970836af0da3
+  sha: 64bb246491b8e9c9751525fe5528da48c8d0e4e6
+  size: 1848918
+source/nxlog-ce-2.8.1248.tar.gz:
+  object_id: bfb3e3d8-b7a8-4f74-a1c2-4cd19928c4b8
+  sha: 91f187cec141819cf46f448418e5818fb68b4d38
+  size: 2552618
+source/openssl-1.0.1h.tar.gz:
+  object_id: 9e3cb9c8-0547-4f59-acac-509c4c22f2de
+  sha: b2239599c8bf8f7fc48590a55205c26abe560bf8
+  size: 4475692
+source/pcre-8.35.tar.gz:
+  object_id: 58cde95b-4b9d-4d46-8d7b-f5dabd9799d8
+  sha: 5a0efc7332c6741114372020a60acfed22befcb9
+  size: 1996552

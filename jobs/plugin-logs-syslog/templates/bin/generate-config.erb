@@ -1,0 +1,146 @@
+#!/var/vcap/bosh/bin/ruby
+
+require 'digest'
+require 'json'
+require 'yaml'
+
+realconf = {}
+
+baseconf = []
+<% [ 'plugin.logs._builtin_defaults', 'plugin.logs.syslog._builtin_defaults', 'plugin.logs._defaults', 'plugin.logs.syslog._defaults' ].each do | key | %><% if_p(key) do | yaml | %>
+baseconf.push YAML.load <<ENDCONF
+<%= yaml %>
+ENDCONF
+<% end %><% end %>
+
+Dir.glob('/var/vcap/jobs/*/plugin/logs/config.yml') do | path |
+  baseconf.push YAML.load_file(path)
+end
+
+<% [ 'plugin.logs._overrides', 'plugin.logs.syslog._overrides' ].each do | key | %><% if_p(key) do | yaml | %>
+baseconf.push YAML.load <<ENDCONF
+<%= yaml %>
+ENDCONF
+<% end %><% end %>
+
+baseconf.each do | config |
+    config['files'].each do | relpath, value |
+        if '/' == relpath[0]
+            abspath = relpath
+        else
+            abspath = "/var/vcap/sys/log/#{relpath}"
+        end
+
+        Dir.glob(abspath) do | path |
+            if nil == value
+                realconf[path] = nil
+            elsif not realconf.has_key?(path) or not realconf[path].nil?
+                if realconf.has_key? path
+                    defconf = realconf[path]
+                else
+                    defconf = {}
+                    defconf['fields'] = {}
+                end
+
+                defconf['fields'].merge! value['fields']
+
+                realconf[path] = defconf
+            end
+        end
+    end
+end
+
+$stdout.puts "CacheDir /var/vcap/data/plugin-logs-syslog"
+#$stdout.puts "Group vcap"
+$stdout.puts "PidFile /var/vcap/sys/run/plugin-logs-syslog/control.pid"
+#$stdout.puts "User vcap"
+
+$stdout.puts "<Extension syslog>"
+$stdout.puts "  Module xm_syslog"
+$stdout.puts "</Extension>"
+
+$stdout.puts "<Output out>"
+
+<% hostport = p('plugin.logs.syslog.server').split(':') %>
+$stdout.puts "  Host <%= hostport[0] %>"
+$stdout.puts "  Port <%= hostport[1] %>"
+
+<% if 'tcp' == p('plugin.logs.syslog.transport') %>
+    <% if '' != p('plugin.logs.syslog.ssl_ca_certificate', '') %>
+        $stdout.puts "  Module om_ssl"
+        $stdout.puts "  CAFile /var/vcap/jobs/plugin-logs-syslog/etc/ssl-ca.crt"
+
+        <% if_p('plugin.logs.syslog.ssl_certificate') do %>
+            $stdout.puts "  CertFile /var/vcap/jobs/plugin-logs-syslog/etc/ssl.crt"
+            $stdout.puts "  CertKeyFile /var/vcap/jobs/plugin-logs-syslog/etc/ssl.key"
+        <% end %>
+    <% else %>
+        $stdout.puts "  Module om_tcp"
+    <% end %>
+
+    $stdout.puts "  Exec to_syslog_ietf();"
+    $stdout.puts "  OutputType LineBased"
+<% elsif 'udp' == p('plugin.logs.syslog.transport') %>
+    $stdout.puts "  Module om_udp"
+    $stdout.puts "  Exec to_syslog_ietf();"
+    $stdout.puts "  OutputType LineBased"
+<% else %>
+    raise StandardError, "Invalid value for plugin.logs.syslog.transport"
+<% end %>
+
+$stdout.puts "</Output>"
+
+md5list = []
+
+realconf.each do | path, value |
+    if value.nil?
+        next
+    end
+
+    pathid = Digest::MD5.hexdigest(path)
+    md5list.push pathid
+
+    $stdout.puts "<Input #{pathid}>"
+    $stdout.puts "  Module im_file"
+    $stdout.puts "  File \"#{path}\""
+    $stdout.puts "  SavePos true"
+    $stdout.puts "  InputType LineBased"
+    $stdout.puts "  Exec $EventReceivedTime = undef;"
+    $stdout.puts "  Exec $SourceModuleName = undef;"
+    $stdout.puts "  Exec $SourceModuleType = undef;"
+    $stdout.puts "  Exec $path = \"#{path}\";"
+
+    fields = {}
+
+    value['fields'].each do | field_key, field_value |
+        file_template = ''
+        path.match(%r"^/var/vcap/sys/log/([^/]+)/.+$") do | m |
+            file_template = m[1]
+        end
+
+        {
+            'deployment' => '<%= spec.deployment %>',
+            'index' => '<%= index %>',
+            'job' => '<%= name %>',
+            'file_path' => path,
+            'file_template' => file_template
+        }.each do | sub_key, sub_value |
+            field_value = field_value.sub "{{#{sub_key}}}", sub_value
+        end
+
+        if not field_value.nil? and '' != field_value
+            fields[field_key] = field_value
+        end
+    end
+
+    fields.each do | field_key, field_value |
+        field_value = field_value.gsub '"', '\"'
+        $stdout.puts "  Exec $#{field_key} = \"#{field_value}\";"
+    end
+
+    $stdout.puts "</Input>"
+end
+
+$stdout.puts "<Route all>"
+$stdout.puts "  Path #{md5list.join(', ')} => out"
+$stdout.puts "</Route>"

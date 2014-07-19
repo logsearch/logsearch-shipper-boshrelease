@@ -1,0 +1,13 @@
+---
+name: "plugin-logs-nxlog"
+files:
+  # http://apache.tradebit.com/pub//apr/apr-1.5.1.tar.gz
+  - "source/apr-1.5.1.tar.gz"
+  # http://hivelocity.dl.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz
+  - "source/expat-2.1.0.tar.gz"
+  # http://softlayer-dal.dl.sourceforge.net/project/nxlog-ce/nxlog-ce-2.8.1248.tar.gz
+  - "source/nxlog-ce-2.8.1248.tar.gz"
+  # https://www.openssl.org/source/openssl-1.0.1h.tar.gz
+  - "source/openssl-1.0.1h.tar.gz"
+  # ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.35.tar.gz
+  - "source/pcre-8.35.tar.gz"

@@ -1,0 +1,5 @@
+---
+name: "plugin-logs-logstash-forwarder"
+files:
+  # http://gobuild.io/github.com/elasticsearch/logstash-forwarder/69142e788f49b88d855bcc68d72937e8138ca004/linux/amd64
+  - "source/logstash-forwarder--69142e788f.zip"

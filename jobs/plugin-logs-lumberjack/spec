@@ -1,0 +1,72 @@
+---
+name: "plugin-logs-lumberjack"
+packages:
+  - "plugin-logs-logstash-forwarder"
+templates:
+  bin/control: "bin/control"
+  bin/generate-config.erb: "bin/generate-config"
+  etc/ssl.key.erb: "etc/ssl.key"
+  etc/ssl.crt.erb: "etc/ssl.crt"
+  etc/ssl-ca.crt.erb: "etc/ssl-ca.crt"
+properties:
+  plugin.logs.lumberjack.field_prefix:
+    default: "@source."
+    description: "A prefix added to all field names"
+  plugin.logs.lumberjack.servers:
+    description: "An array of upstream servers with values in the format of `host:port`"
+  plugin.logs.lumberjack.ssl_ca_certificate:
+    default: ~
+    description: "The upstream SSL certificate to use for authentication"
+  plugin.logs.lumberjack.ssl_certificate:
+    default: ~
+    description: "A SSL certificate to use for authentication"
+  plugin.logs.lumberjack.ssl_key:
+    default: ~
+    description: "A SSL key to use for authentication"
+  plugin.logs.lumberjack.idle_flush_time:
+    default: ~
+    description: "Maximum time to wait for a full spool before flushing anyway"
+  plugin.logs.lumberjack.spool_size:
+    default: ~
+    description: "Maximum number of events to spool before a flush is forced"
+  plugin.logs.lumberjack._builtin_defaults:
+    default: |
+      ---
+      files:
+        "plugin-logs-lumberjack/*.log": ~
+  plugin.logs.lumberjack._defaults:
+    default: ~
+    description: "Default log forwarding configuration applied to lumberjack files"
+  plugin.logs.lumberjack._overrides:
+    default: ~
+    description: "Override template configuration applied to lumberjack-forwarded files"
+  plugin.logs.start_delay:
+    default: ~
+  plugin.logs._builtin_defaults:
+    default: |
+      ---
+      files:
+        "**/*.log":
+          fields:
+            bosh_deployment: "{{deployment}}"
+            bosh_job: "{{job}}/{{index}}"
+            bosh_template: "{{file_template}}"
+        "**/*.stdout.log":
+          fields:
+            stream: "stdout"
+        "**/stdout.log":
+          fields:
+            stream: "stdout"
+        "**/*.stderr.log":
+          fields:
+            stream: "stderr"
+        "**/stderr.log":
+          fields:
+            stream: "stderr"
+    description: "Delay startup commands by this number of seconds"
+  plugin.logs._defaults:
+    default: ~
+    description: "Default log forwarding configuration applied to all forwarded files"
+  plugin.logs._overrides:
+    default: ~
+    description: "Override template configuration applied to all forwarded files"

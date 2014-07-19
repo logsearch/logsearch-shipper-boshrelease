@@ -1,0 +1,64 @@
+#!/bin/bash
+
+set -e
+set -u
+
+PIDFILE=/var/vcap/sys/run/plugin-logs-syslog/control.pid
+LOGDIR=/var/vcap/sys/log/plugin-logs-syslog
+DATADIR=/var/vcap/data/plugin-logs-syslog
+
+mkdir -p `dirname "$PIDFILE"`
+chown vcap:vcap `dirname "$PIDFILE"`
+
+mkdir -p "$LOGDIR"
+chown vcap:vcap "$LOGDIR"
+
+mkdir -p "$DATADIR"
+chown vcap:vcap "$DATADIR"
+
+exec >> /var/vcap/sys/log/plugin-logs-syslog/control.log
+exec 2>&1
+
+
+case $1 in
+
+  start)
+    <% if_p('plugin.logs.start_delay') do | v | %>
+    sleep <%= v %>
+    <% end %>
+
+    /var/vcap/jobs/plugin-logs-syslog/bin/generate-config > $DATADIR/config.conf
+
+    /sbin/start-stop-daemon \
+      --background \
+      --pidfile $PIDFILE \
+      --exec /bin/bash \
+      --chdir "$DATADIR" \
+      --start \
+      -- -c "/var/vcap/packages/plugin-logs-nxlog/bin/nxlog \
+        -f \
+        -c config.conf \
+        >> \"$LOGDIR/stdout.log\" \
+        2>> \"$LOGDIR/stderr.log\" \
+      "
+
+    ;;
+
+  stop)
+    /sbin/start-stop-daemon \
+      --pidfile $PIDFILE \
+      --signal INT \
+      --oknodo \
+      --stop \
+      --retry 15
+
+    ;;
+
+  *)
+    echo "Usage: control {start|stop}" >&2
+
+    exit 1
+
+    ;;
+
+esac
