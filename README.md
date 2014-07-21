@@ -9,7 +9,7 @@ server using various forwarding protocols.
 
 Upload the latest version to your director...
 
-    $ bosh upload release https://dpb587-bosh-release-plugin-logs.s3.amazonaws.com/release/latest.tgz
+    $ bosh upload release https://logsearch-bosh-release-plugin-logs.s3.amazonaws.com/release/latest.tgz
 
 Update your deployment manifest to add the release, add the forwarding template to your jobs, and add the forwarding
 properties...
