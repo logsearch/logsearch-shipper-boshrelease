@@ -45,7 +45,6 @@ forwarding behaviors.
 Log forwarding is configured with [YAML](http://www.yaml.org/) documents from several different sources. The YAML
 document currently uses the following format:
 
-    ---
     files:
       {path-to-file}:
         fields:
@@ -71,7 +70,6 @@ The second configuration source is template-specific configuration files. When s
 logs involved with your job. By default, non-absolute paths are relative to `/var/vcap/sys/log`. As an example, if
 you are using [nginx](http://nginx.org/) you might put the following in `/var/vcap/jobs/nginx/plugin/logs/config.yml`:
 
-    ---
     files:
       "nginx/access.log":
         fields:
@@ -94,7 +92,6 @@ There are several keywords you can use for dynamic interpolation in field values
 
 As an example, the plugin automatically adds several fields to log messages:
 
-    ---
     files:
       "**/*.log":
         fields:
@@ -115,7 +112,6 @@ You can exclude a log file by specifying the path and using a null value. Once a
 forwarding, it cannot be re-included. As an example, the `syslog` forwarder excludes its own log files using the
 following:
 
-    ---
     files:
       "plugin-logs-syslog/*.log": ~
 
@@ -158,8 +154,9 @@ There are several configurable properties (in the `plugin.logs.syslog` namespace
 
 ### Lumberjack
 
-The lumberjack protocol is primarily used by [logstash-forwarder](https://github.com/elasticsearch/logstash-forwarder),
-a project maintained by the [elasticsearch](https://github.com/elasticsearch) team.
+**This forwarder is currently unstable.** The lumberjack protocol is primarily used by
+[logstash-forwarder](https://github.com/elasticsearch/logstash-forwarder), a project maintained by the
+[elasticsearch](https://github.com/elasticsearch) team.
 
 **Job Properties**
 
