@@ -1,4 +1,0 @@
-check process plugin-logs-lumberjack with pidfile /var/vcap/sys/run/plugin-logs-lumberjack/control.pid
-  group vcap
-  start program = "/var/vcap/jobs/plugin-logs-lumberjack/bin/control start"
-  stop program = "/var/vcap/jobs/plugin-logs-lumberjack/bin/control stop"

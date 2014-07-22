@@ -1,6 +1,6 @@
 ---
-final_name: plugin-logs
+final_name: logsearch-shipper
 blobstore:
   provider: s3
   options:
-    bucket_name: logsearch-bosh-release-plugin-logs
+    bucket_name: logsearch-shipper-boshrelease

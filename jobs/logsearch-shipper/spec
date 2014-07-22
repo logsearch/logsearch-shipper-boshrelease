@@ -1,43 +1,36 @@
 ---
-name: "plugin-logs-syslog"
+name: "logsearch-shipper"
 packages:
-  - "plugin-logs-nxlog"
+  - "logsearch-nxlog"
 templates:
-  bin/control: "bin/control"
-  bin/generate-config.erb: "bin/generate-config"
+  bin/control-logs: "bin/control-logs"
+  bin/generate-logs-config.erb: "bin/generate-logs-config"
   etc/ssl.key.erb: "etc/ssl.key"
   etc/ssl.crt.erb: "etc/ssl.crt"
   etc/ssl-ca.crt.erb: "etc/ssl-ca.crt"
+  logsearch/logs.yml: "logsearch/logs.yml"
 properties:
-  plugin.logs.syslog.server:
+  #
+  # logs
+  #
+  logsearch.logs.server:
     description: "The upstream server in the format of `host:port`"
-  plugin.logs.syslog.ssl_ca_certificate:
+  logsearch.logs.ssl_ca_certificate:
     default: ~
     description: "The upstream SSL certificate to use for authentication"
-  plugin.logs.syslog.ssl_certificate:
+  logsearch.logs.ssl_certificate:
     default: ~
     description: "A SSL certificate to use for authentication"
-  plugin.logs.syslog.ssl_key:
+  logsearch.logs.ssl_key:
     default: ~
     description: "A SSL key to use for authentication"
-  plugin.logs.syslog.transport:
+  logsearch.logs.transport:
     default: "tcp"
     description: "Transport to use with upstream server (tcp|udp)"
-  plugin.logs.syslog._builtin_defaults:
-    default: |
-      ---
-      files:
-        "plugin-logs-syslog/*.log": ~
-  plugin.logs.syslog._defaults:
-    default: ~
-    description: "Default log forwarding configuration applied to syslog files"
-  plugin.logs.syslog._overrides:
-    default: ~
-    description: "Override template configuration applied to syslog-forwarded files"
-  plugin.logs.start_delay:
+  logsearch.logs.start_delay:
     default: ~
     description: "Delay startup commands by this number of seconds"
-  plugin.logs._builtin_defaults:
+  logsearch.logs._builtin_defaults:
     default: |
       ---
       files:
@@ -58,9 +51,9 @@ properties:
         "**/stderr.log":
           fields:
             stream: "stderr"
-  plugin.logs._defaults:
+  logsearch.logs._defaults:
     default: ~
     description: "Default log forwarding configuration applied to all forwarded files"
-  plugin.logs._overrides:
+  logsearch.logs._overrides:
     default: ~
     description: "Override template configuration applied to all forwarded files"

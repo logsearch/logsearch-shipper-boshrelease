@@ -1,0 +1,4 @@
+check process logsearch-logs with pidfile /var/vcap/sys/run/logsearch-shipper/logs.pid
+  group vcap
+  start program = "/var/vcap/jobs/logsearch-shipper/bin/control-logs start"
+  stop program = "/var/vcap/jobs/logsearch-shipper/bin/control-logs stop"

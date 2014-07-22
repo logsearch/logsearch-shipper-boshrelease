@@ -3,9 +3,9 @@
 set -e
 set -u
 
-PIDFILE=/var/vcap/sys/run/plugin-logs-syslog/control.pid
-LOGDIR=/var/vcap/sys/log/plugin-logs-syslog
-DATADIR=/var/vcap/data/plugin-logs-syslog
+PIDFILE=/var/vcap/sys/run/logsearch-shipper/logs.control.pid
+LOGDIR=/var/vcap/sys/log/logsearch-shipper
+DATADIR=/var/vcap/data/logsearch-shipper
 
 mkdir -p `dirname "$PIDFILE"`
 chown vcap:vcap `dirname "$PIDFILE"`
@@ -16,7 +16,7 @@ chown vcap:vcap "$LOGDIR"
 mkdir -p "$DATADIR"
 chown vcap:vcap "$DATADIR"
 
-exec >> /var/vcap/sys/log/plugin-logs-syslog/control.log
+exec >> /var/vcap/sys/log/logsearch-shipper/logs.control.log
 exec 2>&1
 
 
@@ -27,7 +27,7 @@ case $1 in
     sleep <%= v %>
     <% end %>
 
-    /var/vcap/jobs/plugin-logs-syslog/bin/generate-config > $DATADIR/config.conf
+    /var/vcap/jobs/logsearch-shipper/bin/generate-logs-config > $DATADIR/config.conf
 
     /sbin/start-stop-daemon \
       --background \
@@ -35,11 +35,10 @@ case $1 in
       --exec /bin/bash \
       --chdir "$DATADIR" \
       --start \
-      -- -c "/var/vcap/packages/plugin-logs-nxlog/bin/nxlog \
-        -f \
+      -- -c "/var/vcap/packages/logsearch-nxlog/bin/nxlog \
         -c config.conf \
-        >> \"$LOGDIR/stdout.log\" \
-        2>> \"$LOGDIR/stderr.log\" \
+        >> \"$LOGDIR/logs.stdout.log\" \
+        2>> \"$LOGDIR/logs.stderr.log\" \
       "
 
     ;;

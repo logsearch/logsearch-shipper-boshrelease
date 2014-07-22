@@ -1,5 +1,5 @@
 ---
-name: "plugin-logs-nxlog"
+name: "logsearch-nxlog"
 files:
   # http://apache.tradebit.com/pub//apr/apr-1.5.1.tar.gz
   - "source/apr-1.5.1.tar.gz"

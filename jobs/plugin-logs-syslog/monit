@@ -1,4 +1,0 @@
-check process plugin-logs-syslog with pidfile /var/vcap/sys/run/plugin-logs-syslog/control.pid
-  group vcap
-  start program = "/var/vcap/jobs/plugin-logs-syslog/bin/control start"
-  stop program = "/var/vcap/jobs/plugin-logs-syslog/bin/control stop"
