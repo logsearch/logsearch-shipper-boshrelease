@@ -133,7 +133,7 @@ There are several configurable properties (in the `logsearch.logs` namespace):
  * `ssl_ca_certificate` - the upstream SSL certificate to use for authentication (`string`, optional)
  * `ssl_certificate` - a SSL certificate to use for authentication (`string`, optional)
  * `ssl_key` - a SSL key to use for authentication (`string`, optional)
- * `start_delay` - delay startup commands by this number of seconds (`integer`, optional)
+ * `start_delay` - delay startup commands by this number of seconds to help catch newly-created logs (`integer`, default `10`)
  * `transport` - transport to use with upstream server (tcp|udp) (`string`, default `tcp`)
  * `_defaults` - default log forwarding YAML configuration applied to all forwarders (`string`, optional)
  * `_overrides` - override template configuration applied to all forwarded files (`string`, optional)
@@ -208,17 +208,17 @@ Here are some recommendations for naming metrics:
 
 There are several configurable properties (in the `logsearch.metrics` namespace):
 
- * `enabled` - Whether to enable metrics functionality (`boolean`, default `true`)
- * `frequency` - Check metrics every interval of this number of seconds (`integer`, default `300`)
- * `host.cpu` - Gather host CPU metrics (`boolean`, default `true`)
- * `host.disk` - Gather host disk metrics (`boolean`, default `true`)
- * `host.loadavg` - Gather host load average metrics (`boolean`, default `true`)
- * `host.memory` - Gather host memory metrics (`boolean`, default `true`)
- * `host.network` - Gather host network metrics (`boolean`, default `true`)
- * `host.processes` - Gather host process metrics (`boolean`, default `true`)
- * `host.swap` - Gather host swap metrics (`boolean`, default `true`)
- * `host.users` - Gather host user metrics (`boolean`, default `true`)
- * `monit.poll` - Gather monit process metrics (`boolean`, default `true`)
+ * `enabled` - whether to enable metrics functionality (`boolean`, default `true`)
+ * `frequency` - check metrics every interval of this number of seconds (`integer`, default `300`)
+ * `host.cpu` - gather host CPU metrics (`boolean`, default `true`)
+ * `host.disk` - gather host disk metrics (`boolean`, default `true`)
+ * `host.loadavg` - gather host load average metrics (`boolean`, default `true`)
+ * `host.memory` - gather host memory metrics (`boolean`, default `true`)
+ * `host.network` - gather host network metrics (`boolean`, default `true`)
+ * `host.processes` - gather host process metrics (`boolean`, default `true`)
+ * `host.swap` - gather host swap metrics (`boolean`, default `true`)
+ * `host.users` - gather host user metrics (`boolean`, default `true`)
+ * `monit.poll` - gather monit process metrics (`boolean`, default `true`)
 
 
 ## Additional Notes

@@ -51,8 +51,8 @@ properties:
     default: "tcp"
     description: "Transport to use with upstream server (tcp|udp)"
   logsearch.logs.start_delay:
-    default: ~
-    description: "Delay startup commands by this number of seconds"
+    default: 10
+    description: "Delay startup commands by this number of seconds to help catch newly-created logs"
   logsearch.logs._builtin_defaults:
     default: |
       ---

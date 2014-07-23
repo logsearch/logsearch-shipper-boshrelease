@@ -23,7 +23,7 @@ exec 2>&1
 case $1 in
 
   start)
-    <% if_p('plugin.logs.start_delay') do | v | %>
+    <% if_p('logsearch.logs.start_delay') do | v | %>
     sleep <%= v %>
     <% end %>
 
