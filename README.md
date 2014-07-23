@@ -221,15 +221,19 @@ There are several configurable properties (in the `logsearch.metrics` namespace)
  * `monit.poll` - Gather monit process metrics (`boolean`, default `true`)
 
 
-## Notes
+## Additional Notes
 
-If you dislike the built-in behaviors (log file selection and `bosh_*`/`stream` fields) and prefer to manage all your
-own settings, you can disable them with the following:
+**Disable Logging Defaults** - if you dislike the built-in behaviors (log file selection and `bosh_*`/`stream` fields)
+and prefer to manage all your own settings, you can disable them with the following:
 
     properties:
       logsearch:
         logs:
           _builtin_defaults: ~
+
+**Kibana Dashboard for Host Metrics** - you'll find a [`hoststats.json`](./share/kibana-dashboards/hoststats.json) file
+which provides a good starting point for viewing host metrics. Upload it to your logsearch cluster and then access it
+using the following query arguments: `director`, `deployment`, `job`.
 
 
 ## Open Source

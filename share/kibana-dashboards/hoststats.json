@@ -1,0 +1,1205 @@
+{
+  "title": "{{ARGS.director||'????'}}/{{ARGS.deployment||'????'}}/{{ARGS.job||'????'}}",
+  "services": {
+    "query": {
+      "list": {
+        "0": {
+          "query": "",
+          "alias": "",
+          "color": "#7EB26D",
+          "id": 0,
+          "pin": false,
+          "type": "lucene",
+          "enable": true
+        },
+        "1": {
+          "id": 1,
+          "color": "#629E51",
+          "alias": "Running",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-running\""
+        },
+        "2": {
+          "id": 2,
+          "color": "#64B0C8",
+          "alias": "Sleeping",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-sleeping\""
+        },
+        "3": {
+          "id": 3,
+          "color": "#614D93",
+          "alias": "Zombies",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-zombies\""
+        },
+        "4": {
+          "id": 4,
+          "color": "#E0752D",
+          "alias": "Stopped",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-stopped\""
+        },
+        "5": {
+          "id": 5,
+          "color": "#0A50A1",
+          "alias": "Paging",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-paging\""
+        },
+        "6": {
+          "id": 6,
+          "color": "#BF1B00",
+          "alias": "Blocked",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-blocked\""
+        },
+        "7": {
+          "id": 7,
+          "color": "#BF1B00",
+          "alias": "Used",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.memory.memory-used\""
+        },
+        "8": {
+          "id": 8,
+          "color": "#E0752D",
+          "alias": "Buffered",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.memory.memory-buffered\""
+        },
+        "9": {
+          "id": 9,
+          "color": "#E5AC0E",
+          "alias": "Cached",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.memory.memory-cached\""
+        },
+        "10": {
+          "id": 10,
+          "color": "#629E51",
+          "alias": "Free",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.memory.memory-free\""
+        },
+        "11": {
+          "id": 11,
+          "color": "#E24D42",
+          "alias": "Received",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.interface-eth0.if_octets.rx\""
+        },
+        "12": {
+          "id": 12,
+          "color": "#1F78C1",
+          "alias": "Sent",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.interface-eth0.if_octets.tx\""
+        },
+        "13": {
+          "id": 13,
+          "color": "#9AC48A",
+          "alias": "1m",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.load.load.shortterm\""
+        },
+        "14": {
+          "id": 14,
+          "color": "#F2C96D",
+          "alias": "5m",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.load.load.midterm\""
+        },
+        "15": {
+          "id": 15,
+          "color": "#EA6460",
+          "alias": "15m",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.load.load.longterm\""
+        },
+        "16": {
+          "id": 16,
+          "color": "#629E51",
+          "alias": "Free",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.df-xvda1.df_complex-free\""
+        },
+        "17": {
+          "id": 17,
+          "color": "#BF1B00",
+          "alias": "Used",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.df-xvda1.df_complex-used\""
+        },
+        "18": {
+          "id": 18,
+          "color": "#629E51",
+          "alias": "Free",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.df-xvdb2.df_complex-free\""
+        },
+        "19": {
+          "id": 19,
+          "color": "#BF1B00",
+          "alias": "Used",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.df-xvdb2.df_complex-used\""
+        },
+        "20": {
+          "id": 20,
+          "color": "#629E51",
+          "alias": "Free",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.df-xvdf1.df_complex-free\""
+        },
+        "21": {
+          "id": 21,
+          "color": "#BF1B00",
+          "alias": "Used",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.df-xvdf1.df_complex-used\""
+        },
+        "22": {
+          "id": 22,
+          "color": "#E24D42",
+          "alias": "Read",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.disk-xvda.disk_octets.read\""
+        },
+        "23": {
+          "id": 23,
+          "color": "#1F78C1",
+          "alias": "Written",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.disk-xvda.disk_octets.write\""
+        },
+        "24": {
+          "id": 24,
+          "color": "#E24D42",
+          "alias": "Read",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.disk-xvdb.disk_octets.read\""
+        },
+        "25": {
+          "id": 25,
+          "color": "#1F78C1",
+          "alias": "Written",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.disk-xvdb.disk_octets.write\""
+        },
+        "26": {
+          "id": 26,
+          "color": "#E24D42",
+          "alias": "Read",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.disk-xvdf1.disk_octets.read\""
+        },
+        "27": {
+          "id": 27,
+          "color": "#1F78C1",
+          "alias": "Written",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.disk-xvdf1.disk_octets.write\""
+        }
+      },
+      "ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    "filter": {
+      "list": {
+        "0": {
+          "type": "time",
+          "field": "@timestamp",
+          "from": "now-1h",
+          "to": "now",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 0
+        },
+        "1": {
+          "type": "querystring",
+          "query": "@source.bosh_director:\"{{ARGS.director||'????'}}\"",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 1
+        },
+        "2": {
+          "type": "querystring",
+          "query": "@source.bosh_deployment:\"{{ARGS.deployment||'????'}}\"",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 2
+        },
+        "3": {
+          "type": "querystring",
+          "query": "@source.bosh_job:\"{{ARGS.job||'????'}}\"",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 3
+        }
+      },
+      "ids": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "rows": [
+    {
+      "title": "Graph",
+      "height": "160px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              13,
+              14,
+              15
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Load Average"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": ".000000954",
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Memory (MB)"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Network",
+      "height": "160px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "total",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              11,
+              12
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Network (B)"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "group": [
+            "default"
+          ],
+          "type": "histogram",
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "fill": 0,
+          "linewidth": 2,
+          "timezone": "browser",
+          "spyable": true,
+          "zoomlinks": false,
+          "bars": false,
+          "stack": true,
+          "points": false,
+          "lines": true,
+          "legend": true,
+          "x-axis": true,
+          "y-axis": true,
+          "percentage": false,
+          "interactive": true,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "title": "Processes",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1M",
+            "1y"
+          ],
+          "options": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "pointradius": 5,
+          "show_query": true,
+          "legend_counts": false,
+          "zerofill": false,
+          "derivative": false
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Disks",
+      "height": "160px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": ".000000954",
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              16,
+              17
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "30s",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "System (MB)"
+        },
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": ".000000954",
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              18,
+              19
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "30s",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Ephemeral (MB)"
+        },
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": ".000000954",
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              20,
+              21
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "30s",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Persistent (MB)"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Disks",
+      "height": "160px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              22,
+              23
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "30s",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "System (B)"
+        },
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              24,
+              25
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "30s",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Ephemeral (B)"
+        },
+        {
+          "span": 4,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              26,
+              27
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "30s",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Persistent (B)"
+        }
+      ],
+      "notice": false
+    }
+  ],
+  "editable": true,
+  "failover": false,
+  "index": {
+    "interval": "day",
+    "pattern": "[logstash-]YYYY.MM.DD",
+    "default": "NO_TIME_FILTER_OR_INDEX_PATTERN_NOT_MATCHED",
+    "warm_fields": true
+  },
+  "style": "dark",
+  "panel_hints": true,
+  "pulldowns": [
+    {
+      "type": "query",
+      "collapse": true,
+      "notice": false,
+      "query": "*",
+      "pinned": true,
+      "history": [],
+      "remember": 10,
+      "enable": false
+    },
+    {
+      "type": "filtering",
+      "collapse": true,
+      "notice": true,
+      "enable": false
+    }
+  ],
+  "nav": [
+    {
+      "type": "timepicker",
+      "collapse": false,
+      "notice": false,
+      "status": "Stable",
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ],
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "timefield": "@timestamp",
+      "now": true,
+      "filter_id": 0,
+      "enable": true
+    }
+  ],
+  "loader": {
+    "save_gist": false,
+    "save_elasticsearch": true,
+    "save_local": true,
+    "save_default": true,
+    "save_temp": true,
+    "save_temp_ttl_enable": true,
+    "save_temp_ttl": "30d",
+    "load_gist": true,
+    "load_elasticsearch": true,
+    "load_elasticsearch_size": 20,
+    "load_local": true,
+    "hide": false
+  },
+  "refresh": "1m"
+}
