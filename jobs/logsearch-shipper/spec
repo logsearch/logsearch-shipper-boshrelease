@@ -84,6 +84,9 @@ properties:
   #
   # metrics
   #
+  logsearch.metrics.enabled:
+    description: "Whether to enable metrics functionality"
+    default: true
   logsearch.metrics.frequency:
     description: "Check metrics every interval of this number of seconds"
     default: 300

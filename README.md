@@ -49,23 +49,23 @@ currently uses the following format:
         fields:
           {key1}: {value1}
 
-The first configuration source is through manifest properties. You can use the `plugin.logs._defaults` property to
+The first configuration source is through manifest properties. You can use the `logsearch.logs._defaults` property to
 define default configuration. By default, all `/var/vcap/sys/log/**/*.log` files are included. As an example, you could
 add the following to your manifest to include the director name on all log messages:
 
     properties:
-      plugin:
-        logsearch:
+      logsearch:
+        logs:
           _defaults: |
             ---
             "**/*.log":
               fields:
                 bosh_director: "prod--aws--us-west-1"
 
-The second configuration source is template-specific configuration files. When starting, the plugin will look for
-`/var/vcap/jobs/{job-name}/logsearch/logs.yml` files to load. This allows you to define default fields for all logs
-involved with your job. By default, non-absolute paths are relative to `/var/vcap/sys/log`. As an example, if you are
-using [nginx](http://nginx.org/) you might put the following in `/var/vcap/jobs/nginx/plugin/logsearch/logs.yml`:
+The second configuration source is template-specific configuration files. When starting, the job will look for other
+`/var/vcap/jobs/{template-name}/logsearch/logs.yml` files to load. This allows you to define default fields for all
+logs involved with your job. By default, non-absolute paths are relative to `/var/vcap/sys/log`. As an example, if you
+are using [nginx](http://nginx.org/) you might put the following in `/var/vcap/jobs/nginx/logsearch/logs.yml`:
 
     files:
       "nginx/access.log":
@@ -76,7 +76,7 @@ using [nginx](http://nginx.org/) you might put the following in `/var/vcap/jobs/
           type: "nginx_error"
 
 The third configuration source is overrides. If you are using an upstream release and need to change some fields they
-specify, you can use the `plugin.logs._overrides` property. As an example, if your filters rely on a different type
+specify, you can use the `logsearch.logs._overrides` property. As an example, if your filters rely on a different type
 name for nginx logs, you might put the following in your manifest:
 
     files:
@@ -92,7 +92,7 @@ There are several keywords you can use for dynamic interpolation in field values
  * `{{file_path}}` - the raw path of the file (e.g. `/var/vcap/sys/log/nginx/access.log`)
  * `{{file_template}}` - a guess of the template generating the log (e.g. `nginx`)
 
-As an example, the plugin [automatically adds](./jobs/logsearch-shipper/spec) several fields to log messages:
+As an example, the job [automatically adds](./jobs/logsearch-shipper/spec) several fields to log messages:
 
     files:
       "**/*.log":
@@ -119,15 +119,15 @@ forwarding, it cannot be re-included. As an example, the log shipper
 Configuration files and their fields are processed in the following order (you should generally avoid setting the
 `_builtin_*` properties since they're internally managed by the release):
 
- * property `plugin.logs._builtin_defaults`
- * property `plugin.logs._defaults`
+ * property `logsearch.logs._builtin_defaults`
+ * property `logsearch.logs._defaults`
  * files `/var/vcap/jobs/*/logsearch/logs.yml`
- * property `plugin.logs._overrides`
+ * property `logsearch.logs._overrides`
 
 
 ### Job Properties
 
-There are several configurable properties (in the `plugin.logs` namespace):
+There are several configurable properties (in the `logsearch.logs` namespace):
 
  * `server` - the upstream server in the format of `host:port` (`string`, required)
  * `ssl_ca_certificate` - the upstream SSL certificate to use for authentication (`string`, optional)
@@ -141,7 +141,21 @@ There are several configurable properties (in the `plugin.logs` namespace):
 
 ## Metrics
 
-Metrics are collected from several sources. The first set of metrics are automatically collected from the host system:
+By default, metrics are collected every 5 minutes, but you can adjust it with the `logsearch.metrics.frequency`
+property. As an example, if you wanted to check once a minute, you could use the following:
+
+    properties:
+      logsearch:
+        metrics:
+          frequency: 60
+
+If you prefer to completely disable this functionality, you can set `logsearch.metrics.enabled` to `false`.
+
+Internally, metrics are treated as log file messages, so they use the same configuration documented in the Logs
+section. This means the measurements will have several fields added, according to your defaults (e.g. `bosh_deployment`
+and `bosh_job`). By default, metrics are also set with a `type` field set to `metric`.
+
+Metrics are collected from several sources. The first set of metrics are enabled by default and come from the host:
 
  * `cpu` - idle, interrupt, nice, soft IRQ, steal, system, user, and wait (by core)
  * `disk` - merges, bytes, operations, and time (by read, write; by disk); disk space used, free, and reserved (by disk)
@@ -152,23 +166,14 @@ Metrics are collected from several sources. The first set of metrics are automat
  * `swap` - cached, free, and used; I/O in and out
  * `users` - logged in
 
-You can optionally disable those metrics by setting the respective `plugin.metrics.host.{source}` property to `false`
-(e.g., `plugin.metrics.host.cpu: false`). These metrics are all named with a `host.` prefix.
-
-By default, metrics are collected every 5 minutes, but you can adjust it with the `plugin.metrics.frequency` property.
-As an example, if you wanted to check once a minute, you could use the following:
-
-    properties:
-      plugin:
-        logsearch:
-          metrics:
-            frequency: 60
+You can optionally disable those metrics by setting the respective `logsearch.metrics.host.{source}` property to
+`false` (e.g. `logsearch.metrics.host.cpu: false`). These metrics are all named with a `host.` prefix.
 
 A second set of metrics are automatically generated from the monit-managed processes and they include the following
 (per process):
 
  * `children` - number of child processes
- * `cpu_percent` - CPU usage of the parent and child processes
+ * `cpu` - CPU usage of the parent and child processes
  * `memory` - memory (in bytes) of the parent and child processes
  * `status` - process status (0 = active, 1 = inactive, 2 = ignored)
  * `uptime` - seconds the process has been running
@@ -178,23 +183,32 @@ These metrics are enabled by default and are prefixed with `monit.` and the moni
 `logsearch.metrics.monit.poll` property to `false`.
 
 The third set of metrics can be created by individual job templates using the following conventions. First, metric
-collectors should be a script which output metrics to `STDOUT` in the following simple format:
+collectors should be a script which writes to `STDOUT` in the following simple format:
 
-    {metric-name} {numeric-value} {unix-timestamp}
+    {metric-name:string} {metric-value:number} {unix-timestamp:integer}
 
 Each of the three values must be separated by a single space, and each tuple must end in a new line. The script runs in
 an empty environment except for a `METRIC_FREQUENCY` indicating how frequently it should poll metrics (in seconds). The
 script should be long-running, only exiting when it receives an `INT` signal.
 
-Each metric collector should have its own directory inside `{job-dir}/logsearch/metric-collector` and the metric
-collector should be named `collector`. As an example, take a look at what the monit metric collector, mentioned above,
-looks like in [`jobs/logsearch-shipper/templates/logsearch/metric-collector/monit/collector`](./jobs/logsearch-shipper/templates/logsearch/metric-collector/monit/collector).
+Each metric collector should have its own directory inside `{job-dir}/logsearch/metric-collector` and the script should
+be named `collector`. When the shipper process is starting up, it will automatically discover the metric collectors it
+needs to run. As an example, take a look at the
+[built-in metric collector](./jobs/logsearch-shipper/templates/logsearch/metric-collector/monit/collector) responsible
+for generating the monit metrics mentioned above.
+
+Here are some recommendations for naming metrics:
+
+ * namespace them by the template name
+ * use `.` to separate namespace levels
+ * use the character range of `A-Za-z0-9._`
 
 
 ### Job Properties
 
-There are several configurable properties (in the `plugin.metrics` namespace):
+There are several configurable properties (in the `logsearch.metrics` namespace):
 
+ * `enabled` - Whether to enable metrics functionality (`boolean`, default `true`)
  * `frequency` - Check metrics every interval of this number of seconds (`integer`, default `300`)
  * `host.cpu` - Gather host CPU metrics (`boolean`, default `true`)
  * `host.disk` - Gather host disk metrics (`boolean`, default `true`)
@@ -213,7 +227,7 @@ If you dislike the built-in behaviors (log file selection and `bosh_*`/`stream` 
 own settings, you can disable them with the following:
 
     properties:
-      plugin:
+      logsearch:
         logs:
           _builtin_defaults: ~
 

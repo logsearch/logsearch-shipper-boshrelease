@@ -36,7 +36,7 @@ while true
 
     service.match /<cpu>(.*)<\/cpu>/ do | cpu |
       cpu[0].match /<percenttotal>(.*)<\/percenttotal>/ do | match |
-        puts "monit.#{service_name}.cpu_percent #{match[1]} #{ts}"
+        puts "monit.#{service_name}.cpu #{match[1]} #{ts}"
       end
     end
   end
