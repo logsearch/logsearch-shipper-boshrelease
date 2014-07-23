@@ -23,3 +23,7 @@ source/pcre-8.35.tar.gz:
   object_id: 58cde95b-4b9d-4d46-8d7b-f5dabd9799d8
   sha: 5a0efc7332c6741114372020a60acfed22befcb9
   size: 1996552
+source/collectd-5.4.1.tar.gz:
+  object_id: a5d77875-63bf-46d9-bf78-21b5b102491f
+  sha: faaccac4daf48449bcefc9d6f9236f98a5dd5b4b
+  size: 1894132
