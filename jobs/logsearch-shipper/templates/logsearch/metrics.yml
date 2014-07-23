@@ -1,0 +1,2 @@
+monit:
+  enabled: <%= p('logsearch.metrics.monit.poll') %>

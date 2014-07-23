@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /bin/nc -l 127.0.0.1 2003 | sed 's/^collectd\.localhost./host./' >> /var/vcap/sys/log/logsearch-shipper/metrics-collectd.metrics.log

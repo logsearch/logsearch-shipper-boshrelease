@@ -1,14 +1,37 @@
 ---
 name: "logsearch-shipper"
+
 packages:
+  - "logsearch-collectd"
   - "logsearch-nxlog"
+
 templates:
-  bin/control-logs: "bin/control-logs"
-  bin/generate-logs-config.erb: "bin/generate-logs-config"
-  etc/ssl.key.erb: "etc/ssl.key"
-  etc/ssl.crt.erb: "etc/ssl.crt"
-  etc/ssl-ca.crt.erb: "etc/ssl-ca.crt"
+  #
+  # logs
+  #
+  bin/logs.control: "bin/logs.control"
+  bin/logs.generate-config.erb: "bin/logs.generate-config"
+  etc/logs.ssl.key.erb: "etc/logs.ssl.key"
+  etc/logs.ssl.crt.erb: "etc/logs.ssl.crt"
+  etc/logs.ssl-ca.crt.erb: "etc/logs.ssl-ca.crt"
+
+  #
+  # metrics
+  #
+  bin/metrics-collectd.control: "bin/metrics-collectd.control"
+  bin/metrics-collectd.graphite-mock: "bin/metrics-collectd.graphite-mock"
+  bin/metrics-monit.control: "bin/metrics-monit.control"
+  bin/metrics-monit-runner.control.erb: "bin/metrics-monit-runner.control"
+  bin/metrics-monit.generate-config.erb: "bin/metrics-monit.generate-config"
+  etc/metrics-collectd.collectd.conf.erb: "etc/metrics-collectd.collectd.conf"
+
+  #
+  # meta
+  #
   logsearch/logs.yml: "logsearch/logs.yml"
+  logsearch/metrics.yml: "logsearch/metrics.yml"
+  logsearch/metric-collector/monit/collector: "logsearch/metric-collector/monit/collector"
+
 properties:
   #
   # logs
@@ -57,3 +80,37 @@ properties:
   logsearch.logs._overrides:
     default: ~
     description: "Override template configuration applied to all forwarded files"
+
+  #
+  # metrics
+  #
+  logsearch.metrics.frequency:
+    description: "Check metrics every interval of this number of seconds"
+    default: 300
+  logsearch.metrics.host.cpu:
+    description: "Gather host CPU metrics"
+    default: true
+  logsearch.metrics.host.disk:
+    description: "Gather host disk metrics"
+    default: true
+  logsearch.metrics.host.loadavg:
+    description: "Gather host load average metrics"
+    default: true
+  logsearch.metrics.host.memory:
+    description: "Gather host memory metrics"
+    default: true
+  logsearch.metrics.host.network:
+    description: "Gather host network metrics"
+    default: true
+  logsearch.metrics.host.processes:
+    description: "Gather host process metrics"
+    default: true
+  logsearch.metrics.host.swap:
+    description: "Gather host swap metrics"
+    default: true
+  logsearch.metrics.host.users:
+    description: "Gather host user metrics"
+    default: true
+  logsearch.metrics.monit.poll:
+    description: "Gather monit process metrics"
+    default: true

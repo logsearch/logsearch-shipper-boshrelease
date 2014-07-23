@@ -1,0 +1,5 @@
+---
+name: "logsearch-collectd"
+files:
+  # http://collectd.org/files/collectd-5.4.1.tar.gz
+  - "source/collectd-5.4.1.tar.gz"

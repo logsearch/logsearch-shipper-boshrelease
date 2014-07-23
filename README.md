@@ -2,6 +2,7 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release to help centralize the logs
 
 Use this in conjunction with your own [logsearch](https://github.com/logsearch/logsearch-boshrelease) deployment.
 
+
 ---
 
 
@@ -54,7 +55,7 @@ add the following to your manifest to include the director name on all log messa
 
     properties:
       plugin:
-        logs:
+        logsearch:
           _defaults: |
             ---
             "**/*.log":
@@ -123,9 +124,10 @@ Configuration files and their fields are processed in the following order (you s
  * files `/var/vcap/jobs/*/logsearch/logs.yml`
  * property `plugin.logs._overrides`
 
-**Job Properties**
 
-There are several configurable properties used by all forwarders (in the `plugin.logs` namespace):
+### Job Properties
+
+There are several configurable properties (in the `plugin.logs` namespace):
 
  * `server` - the upstream server in the format of `host:port` (`string`, required)
  * `ssl_ca_certificate` - the upstream SSL certificate to use for authentication (`string`, optional)
@@ -135,6 +137,74 @@ There are several configurable properties used by all forwarders (in the `plugin
  * `transport` - transport to use with upstream server (tcp|udp) (`string`, default `tcp`)
  * `_defaults` - default log forwarding YAML configuration applied to all forwarders (`string`, optional)
  * `_overrides` - override template configuration applied to all forwarded files (`string`, optional)
+
+
+## Metrics
+
+Metrics are collected from several sources. The first set of metrics are automatically collected from the host system:
+
+ * `cpu` - idle, interrupt, nice, soft IRQ, steal, system, user, and wait (by core)
+ * `disk` - merges, bytes, operations, and time (by read, write; by disk); disk space used, free, and reserved (by disk)
+ * `loadavg` - short, mid, and long-term
+ * `memory` - buffered, cached, free and used bytes
+ * `network` - errors, bytes, and packets (by received, transmitted; by interface)
+ * `processes` - blocked, paging, running, sleeping, stopped, and zombie states; fork rate
+ * `swap` - cached, free, and used; I/O in and out
+ * `users` - logged in
+
+You can optionally disable those metrics by setting the respective `plugin.metrics.host.{source}` property to `false`
+(e.g., `plugin.metrics.host.cpu: false`). These metrics are all named with a `host.` prefix.
+
+By default, metrics are collected every 5 minutes, but you can adjust it with the `plugin.metrics.frequency` property.
+As an example, if you wanted to check once a minute, you could use the following:
+
+    properties:
+      plugin:
+        logsearch:
+          metrics:
+            frequency: 60
+
+A second set of metrics are automatically generated from the monit-managed processes and they include the following
+(per process):
+
+ * `children` - number of child processes
+ * `cpu_percent` - CPU usage of the parent and child processes
+ * `memory` - memory (in bytes) of the parent and child processes
+ * `status` - process status (0 = active, 1 = inactive, 2 = ignored)
+ * `uptime` - seconds the process has been running
+
+These metrics are enabled by default and are prefixed with `monit.` and the monit process name (e.g.
+`monit.logsearch-logs.uptime`). If you prefer to disable these metrics, you can set the
+`logsearch.metrics.monit.poll` property to `false`.
+
+The third set of metrics can be created by individual job templates using the following conventions. First, metric
+collectors should be a script which output metrics to `STDOUT` in the following simple format:
+
+    {metric-name} {numeric-value} {unix-timestamp}
+
+Each of the three values must be separated by a single space, and each tuple must end in a new line. The script runs in
+an empty environment except for a `METRIC_FREQUENCY` indicating how frequently it should poll metrics (in seconds). The
+script should be long-running, only exiting when it receives an `INT` signal.
+
+Each metric collector should have its own directory inside `{job-dir}/logsearch/metric-collector` and the metric
+collector should be named `collector`. As an example, take a look at what the monit metric collector, mentioned above,
+looks like in [`jobs/logsearch-shipper/templates/logsearch/metric-collector/monit/collector`](./jobs/logsearch-shipper/templates/logsearch/metric-collector/monit/collector).
+
+
+### Job Properties
+
+There are several configurable properties (in the `plugin.metrics` namespace):
+
+ * `frequency` - Check metrics every interval of this number of seconds (`integer`, default `300`)
+ * `host.cpu` - Gather host CPU metrics (`boolean`, default `true`)
+ * `host.disk` - Gather host disk metrics (`boolean`, default `true`)
+ * `host.loadavg` - Gather host load average metrics (`boolean`, default `true`)
+ * `host.memory` - Gather host memory metrics (`boolean`, default `true`)
+ * `host.network` - Gather host network metrics (`boolean`, default `true`)
+ * `host.processes` - Gather host process metrics (`boolean`, default `true`)
+ * `host.swap` - Gather host swap metrics (`boolean`, default `true`)
+ * `host.users` - Gather host user metrics (`boolean`, default `true`)
+ * `monit.poll` - Gather monit process metrics (`boolean`, default `true`)
 
 
 ## Notes

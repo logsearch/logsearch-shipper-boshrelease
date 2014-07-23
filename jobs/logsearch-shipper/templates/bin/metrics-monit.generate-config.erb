@@ -1,0 +1,34 @@
+#!/var/vcap/bosh/bin/ruby
+
+require 'yaml'
+
+$stdout.puts "set daemon 15"
+$stdout.puts "set logfile /var/vcap/jobs/logsearch-shipper/metrics-monit.log"
+$stdout.puts "set pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit.pid"
+$stdout.puts "set httpd port 2922 and use address 127.0.0.1"
+$stdout.puts "  allow cleartext /var/vcap/monit/monit.user"
+
+Dir.glob('/var/vcap/jobs/**') do | template_path |
+    baseconf = {}
+
+    if File.exists?("#{template_path}/logsearch/metrics.yml")
+        baseconf = YAML.load_file("#{template_path}/logsearch/metrics.yml")
+    end
+
+    Dir.glob("#{template_path}/logsearch/metric-collector/*/collector") do | collector_path |
+        template_name = File.basename(template_path)
+        collector_name = File.basename(File.dirname(collector_path))
+
+        if baseconf.has_key?(collector_name) and baseconf[collector_name].has_key?('enabled') and !baseconf[collector_name]['enabled']
+            next
+        end
+
+        service_name = "#{template_name}--#{collector_name}"
+
+        $stdout.puts ""
+        $stdout.puts "check process #{service_name} with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit/#{service_name}.pid"
+        $stdout.puts "  group vcap"
+        $stdout.puts "  start program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control #{template_name} #{collector_name} start\" with timeout <%= p('logsearch.metrics.frequency') %> seconds"
+        $stdout.puts "  stop program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control #{template_name} #{collector_name} stop\""
+    end
+end
