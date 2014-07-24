@@ -425,8 +425,8 @@
           "value_field": "value",
           "x-axis": true,
           "y-axis": true,
-          "scale": ".000000954",
-          "y_format": "none",
+          "scale": 1,
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -489,7 +489,7 @@
             "value_type": "individual",
             "query_as_alias": true
           },
-          "title": "Memory (MB)"
+          "title": "Memory"
         }
       ],
       "notice": false
@@ -512,7 +512,7 @@
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
-          "y_format": "none",
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -573,7 +573,7 @@
             "value_type": "individual",
             "query_as_alias": true
           },
-          "title": "Network (B)"
+          "title": "Network"
         },
         {
           "span": 6,
@@ -676,8 +676,8 @@
           "value_field": "value",
           "x-axis": true,
           "y-axis": true,
-          "scale": ".000000954",
-          "y_format": "none",
+          "scale": 1,
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -738,7 +738,7 @@
             "value_type": "individual",
             "query_as_alias": true
           },
-          "title": "System (MB)"
+          "title": "System"
         },
         {
           "span": 4,
@@ -750,8 +750,8 @@
           "value_field": "value",
           "x-axis": true,
           "y-axis": true,
-          "scale": ".000000954",
-          "y_format": "none",
+          "scale": 1,
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -812,7 +812,7 @@
             "value_type": "individual",
             "query_as_alias": true
           },
-          "title": "Ephemeral (MB)"
+          "title": "Ephemeral"
         },
         {
           "span": 4,
@@ -824,8 +824,8 @@
           "value_field": "value",
           "x-axis": true,
           "y-axis": true,
-          "scale": ".000000954",
-          "y_format": "none",
+          "scale": 1,
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -886,7 +886,7 @@
             "value_type": "individual",
             "query_as_alias": true
           },
-          "title": "Persistent (MB)"
+          "title": "Persistent"
         }
       ],
       "notice": false
@@ -909,7 +909,7 @@
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
-          "y_format": "none",
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -970,7 +970,7 @@
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "System (B)"
+          "title": "System"
         },
         {
           "span": 4,
@@ -983,7 +983,7 @@
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
-          "y_format": "none",
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -1044,7 +1044,7 @@
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Ephemeral (B)"
+          "title": "Ephemeral"
         },
         {
           "span": 4,
@@ -1057,7 +1057,7 @@
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
-          "y_format": "none",
+          "y_format": "bytes",
           "grid": {
             "max": null,
             "min": 0
@@ -1118,7 +1118,7 @@
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Persistent (B)"
+          "title": "Persistent"
         }
       ],
       "notice": false

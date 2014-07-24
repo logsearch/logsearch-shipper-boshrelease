@@ -224,17 +224,30 @@ There are several configurable properties (in the `logsearch.metrics` namespace)
 
 ## Additional Notes
 
-**Disable Logging Defaults** - if you dislike the built-in behaviors (log file selection and `bosh_*`/`stream` fields)
-and prefer to manage all your own settings, you can disable them with the following:
+### Disable Logging Defaults
+
+If you dislike the built-in behaviors (log file selection and `bosh_*`/`stream` fields) and prefer to manage all your
+own settings, you can disable them with the following:
 
     properties:
       logsearch:
         logs:
           _builtin_defaults: ~
 
-**Kibana Dashboard for Host Metrics** - you'll find a [`hoststats.json`](./share/kibana-dashboards/hoststats.json) file
-which provides a good starting point for viewing host metrics. Upload it to your logsearch cluster and then access it
-using the following query arguments: `director`, `deployment`, `job`.
+
+### Kibana Dashboards
+
+You'll find several sample Kibana dashboards in `share/kibana-dashboards`. Many of them use query arguments, so the
+easiest way to import them into kibana is with an elasticsearch curl request like the following:
+
+    $ cat share/kibana-dashboards/hoststats.json \
+      | jq -c -r '{ "title" : "metric-job", "group" : "guest", "user" : "guest", "dashboard" : (. | tostring) }' \
+      | curl -XPUT -d @- http://logsearch/kibana-int/dashboard/hoststat
+
+The following sample dashboards are available:
+
+ * [`metrics-job.json`](./share/kibana-dashboards/metrics-job.json`) - shows standard host metrics (e.g. load, network,
+   disks). It requires the `director, `deployment`, and `job` query arguments.
 
 
 ## Open Source
