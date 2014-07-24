@@ -19,7 +19,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-running\""
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state_running\""
         },
         "2": {
           "id": 2,
@@ -28,7 +28,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-sleeping\""
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state_sleeping\""
         },
         "3": {
           "id": 3,
@@ -37,7 +37,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-zombies\""
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state_zombies\""
         },
         "4": {
           "id": 4,
@@ -46,7 +46,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-stopped\""
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state_stopped\""
         },
         "5": {
           "id": 5,
@@ -55,7 +55,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-paging\""
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state_paging\""
         },
         "6": {
           "id": 6,
@@ -64,7 +64,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.processes.ps_state-blocked\""
+          "query": "_type:\"metric\" AND name:\"host.processes.ps_state_blocked\""
         },
         "7": {
           "id": 7,
@@ -73,7 +73,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.memory.memory-used\""
+          "query": "_type:\"metric\" AND name:\"host.memory.memory_used\""
         },
         "8": {
           "id": 8,
@@ -82,7 +82,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.memory.memory-buffered\""
+          "query": "_type:\"metric\" AND name:\"host.memory.memory_buffered\""
         },
         "9": {
           "id": 9,
@@ -91,7 +91,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.memory.memory-cached\""
+          "query": "_type:\"metric\" AND name:\"host.memory.memory_cached\""
         },
         "10": {
           "id": 10,
@@ -100,7 +100,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.memory.memory-free\""
+          "query": "_type:\"metric\" AND name:\"host.memory.memory_free\""
         },
         "11": {
           "id": 11,
@@ -109,7 +109,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.interface-eth0.if_octets.rx\""
+          "query": "_type:\"metric\" AND name:\"host.interface_eth0.if_octets.rx\""
         },
         "12": {
           "id": 12,
@@ -118,7 +118,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.interface-eth0.if_octets.tx\""
+          "query": "_type:\"metric\" AND name:\"host.interface_eth0.if_octets.tx\""
         },
         "13": {
           "id": 13,
@@ -154,7 +154,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.df-xvda1.df_complex-free\""
+          "query": "_type:\"metric\" AND name:\"host.df_xvda1.df_complex_free\""
         },
         "17": {
           "id": 17,
@@ -163,7 +163,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.df-xvda1.df_complex-used\""
+          "query": "_type:\"metric\" AND name:\"host.df_xvda1.df_complex_used\""
         },
         "18": {
           "id": 18,
@@ -172,7 +172,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.df-xvdb2.df_complex-free\""
+          "query": "_type:\"metric\" AND name:\"host.df_xvdb2.df_complex_free\""
         },
         "19": {
           "id": 19,
@@ -181,7 +181,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.df-xvdb2.df_complex-used\""
+          "query": "_type:\"metric\" AND name:\"host.df_xvdb2.df_complex_used\""
         },
         "20": {
           "id": 20,
@@ -190,7 +190,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.df-xvdf1.df_complex-free\""
+          "query": "_type:\"metric\" AND name:\"host.df_xvdf1.df_complex_free\""
         },
         "21": {
           "id": 21,
@@ -199,7 +199,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.df-xvdf1.df_complex-used\""
+          "query": "_type:\"metric\" AND name:\"host.df_xvdf1.df_complex_used\""
         },
         "22": {
           "id": 22,
@@ -208,7 +208,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.disk-xvda.disk_octets.read\""
+          "query": "_type:\"metric\" AND name:\"host.disk_xvda.disk_octets.read\""
         },
         "23": {
           "id": 23,
@@ -217,7 +217,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.disk-xvda.disk_octets.write\""
+          "query": "_type:\"metric\" AND name:\"host.disk_xvda.disk_octets.write\""
         },
         "24": {
           "id": 24,
@@ -226,7 +226,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.disk-xvdb.disk_octets.read\""
+          "query": "_type:\"metric\" AND name:\"host.disk_xvdb.disk_octets.read\""
         },
         "25": {
           "id": 25,
@@ -235,7 +235,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.disk-xvdb.disk_octets.write\""
+          "query": "_type:\"metric\" AND name:\"host.disk_xvdb.disk_octets.write\""
         },
         "26": {
           "id": 26,
@@ -244,7 +244,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.disk-xvdf1.disk_octets.read\""
+          "query": "_type:\"metric\" AND name:\"host.disk_xvdf1.disk_octets.read\""
         },
         "27": {
           "id": 27,
@@ -253,7 +253,7 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"host.disk-xvdf1.disk_octets.write\""
+          "query": "_type:\"metric\" AND name:\"host.disk_xvdf1.disk_octets.write\""
         }
       },
       "ids": [

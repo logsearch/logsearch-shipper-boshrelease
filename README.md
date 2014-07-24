@@ -240,7 +240,7 @@ own settings, you can disable them with the following:
 You'll find several sample Kibana dashboards in `share/kibana-dashboards`. Many of them use query arguments, so the
 easiest way to import them into kibana is with an elasticsearch curl request like the following:
 
-    $ cat share/kibana-dashboards/hoststats.json \
+    $ cat share/kibana-dashboards/metrics-job.json \
       | jq -c -r '{ "title" : "metric-job", "group" : "guest", "user" : "guest", "dashboard" : (. | tostring) }' \
       | curl -XPUT -d @- http://logsearch/kibana-int/dashboard/hoststat
 
