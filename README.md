@@ -129,6 +129,7 @@ Configuration files and their fields are processed in the following order (you s
 
 There are several configurable properties (in the `logsearch.logs` namespace):
 
+ * `enabled` - whether to enable log forwarding functionality (`boolean`, default `true`)
  * `server` - the upstream server in the format of `host:port` (`string`, required)
  * `ssl_ca_certificate` - the upstream SSL certificate to use for authentication (`string`, optional)
  * `ssl_certificate` - a SSL certificate to use for authentication (`string`, optional)

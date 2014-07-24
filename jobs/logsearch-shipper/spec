@@ -36,6 +36,9 @@ properties:
   #
   # logs
   #
+  logsearch.logs.enabled:
+    description: "Whether to enable log forwarding functionality"
+    default: true
   logsearch.logs.server:
     description: "The upstream server in the format of `host:port`"
   logsearch.logs.ssl_ca_certificate:
