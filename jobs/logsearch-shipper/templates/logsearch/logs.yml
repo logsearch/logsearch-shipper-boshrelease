@@ -1,6 +1,9 @@
 ---
 files:
+  # logging about our own logs can cause recursions
   "logsearch-shipper/logs.*.log": ~
   "logsearch-shipper/*.metrics.log":
     fields:
       type: "metric"
+      # the path name is excessive data and should be meaningless
+      path: ~
