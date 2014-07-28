@@ -3,6 +3,8 @@
 require 'net/http'
 require 'uri'
 
+STDOUT.sync = true
+
 uri = URI('http://127.0.0.1:2822/_status2?format=xml')
 
 freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
