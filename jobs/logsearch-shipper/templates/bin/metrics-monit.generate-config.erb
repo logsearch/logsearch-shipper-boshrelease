@@ -2,33 +2,90 @@
 
 require 'yaml'
 
+baseconf = []
+
+# the user might have specified some defaults
+<% [ 'logsearch.metrics._defaults' ].each do | key | %><% if_p(key) do | yaml | %>
+baseconf.push YAML.load <<ENDCONF
+<%= yaml %>
+ENDCONF
+<% end %><% end %>
+
+# automatically find collectors
+Dir.glob('/var/vcap/jobs/**') do | template_path |
+    templateconf = {
+        'collectors' => {}
+    }
+
+    Dir.glob("#{template_path}/logsearch/metric-collector/*/collector") do | collector_path |
+        template_name = File.basename(template_path)
+        collector_name = File.basename(File.dirname(collector_path))
+
+        templateconf['collectors']["#{template_name}--#{collector_name}"] = {
+            'exec' => "#{collector_path}",
+        }
+    end
+
+    if File.exists? "#{template_path}/logsearch/metrics.yml"
+        templatefile = YAML.load_file("#{template_path}/logsearch/metrics.yml")
+
+        if templatefile.has_key? 'collectors'
+            templatefile['collectors'].each do | k, v |
+                if templateconf['collectors'].has_key? k
+                    templateconf['collectors'][k].merge! v
+                else
+                    templateconf['collectors'][k] = v
+                end
+            end
+        end
+    end
+
+    baseconf.push templateconf
+end
+
+# the user might have overridden some defaults
+<% [ 'logsearch.metrics._overrides' ].each do | key | %><% if_p(key) do | yaml | %>
+baseconf.push YAML.load <<ENDCONF
+<%= yaml %>
+ENDCONF
+<% end %><% end %>
+
 $stdout.puts "set daemon 15"
 $stdout.puts "set logfile /var/vcap/jobs/logsearch-shipper/metrics-monit.log"
 $stdout.puts "set pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit.pid"
 $stdout.puts "set httpd port 2922 and use address 127.0.0.1"
 $stdout.puts "  allow cleartext /var/vcap/monit/monit.user"
 
-Dir.glob('/var/vcap/jobs/**') do | template_path |
-    baseconf = {}
+if 0 == baseconf.length
+    exit
+end
 
-    if File.exists?("#{template_path}/logsearch/metrics.yml")
-        baseconf = YAML.load_file("#{template_path}/logsearch/metrics.yml")
-    end
+realconf = {
+    'collectors' => {},
+}
 
-    Dir.glob("#{template_path}/logsearch/metric-collector/*/collector") do | collector_path |
-        template_name = File.basename(template_path)
-        collector_name = File.basename(File.dirname(collector_path))
-
-        if baseconf.has_key?(collector_name) and baseconf[collector_name].has_key?('enabled') and !baseconf[collector_name]['enabled']
-            next
+# now merge things together sanely
+baseconf.each do | config |
+    config['collectors'].each do | k, props |
+        if not realconf['collectors'].has_key? k
+            realconf['collectors'][k] = {
+                'enabled' => true,
+                'frequency' => <%= p('logsearch.metrics.frequency') %>,
+            }
         end
 
-        service_name = "#{template_name}--#{collector_name}"
-
-        $stdout.puts ""
-        $stdout.puts "check process #{service_name} with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit/#{service_name}.pid"
-        $stdout.puts "  group vcap"
-        $stdout.puts "  start program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control #{template_name} #{collector_name} start\" with timeout <%= p('logsearch.metrics.frequency') %> seconds"
-        $stdout.puts "  stop program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control #{template_name} #{collector_name} stop\""
+        realconf['collectors'][k].merge! props
     end
+end
+
+realconf['collectors'].each do | task_name, task_props |
+    if not task_props['enabled']
+        next
+    end
+
+    $stdout.puts ""
+    $stdout.puts "check process #{task_name} with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit/#{task_name}.pid"
+    $stdout.puts "  group vcap"
+    $stdout.puts "  start program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control start #{task_name} #{task_props['frequency']} #{task_props['exec']}\" with timeout #{task_props['frequency']} seconds"
+    $stdout.puts "  stop program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control stop #{task_name}\""
 end

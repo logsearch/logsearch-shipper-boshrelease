@@ -120,3 +120,9 @@ properties:
   logsearch.metrics.monit.poll:
     description: "Gather monit process metrics"
     default: true
+  logsearch.metrics._defaults:
+    default: ~
+    description: "Default metric collector configuration"
+  logsearch.metrics._overrides:
+    default: ~
+    description: "Override template configuration for metric collectors"

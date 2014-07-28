@@ -5,8 +5,7 @@
 set -e
 set -u
 
-EXECFILE="/var/vcap/jobs/$1/logsearch/metric-collector/$2/collector"
-PIDFILE="/var/vcap/sys/run/logsearch-shipper/metrics-monit/$1--$2.pid"
+PIDFILE="/var/vcap/sys/run/logsearch-shipper/metrics-monit/$2.pid"
 LOGSTDOUT="/var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.metrics.log"
 LOGSTDERR="/var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.stderr.log"
 
@@ -16,9 +15,12 @@ chown vcap:vcap "`dirname $PIDFILE`"
 exec >> /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.control.log
 exec 2>&1
 
-case $3 in
+case $1 in
 
   start)
+    FREQUENCY="$3"
+
+    EXECFILE="$4"
     chmod +x "$EXECFILE"
 
     /sbin/start-stop-daemon \
@@ -26,9 +28,8 @@ case $3 in
       --pidfile "$PIDFILE" \
       --make-pidfile \
       --exec /bin/bash \
-      --chdir "/var/vcap/jobs/$1" \
       --start \
-      -- -c "export METRIC_FREQUENCY=<%= p('logsearch.metrics.frequency') %> ; exec \"$EXECFILE\" \
+      -- -c "export METRIC_FREQUENCY=$FREQUENCY ; exec \"$EXECFILE\" \
         >> \"$LOGSTDOUT\" \
         2>> \"$LOGSTDERR\" \
       "

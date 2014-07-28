@@ -1,2 +1,3 @@
-monit:
-  enabled: <%= p('logsearch.metrics.monit.poll') %>
+collectors:
+  logsearch-shipper--monit:
+    enabled: <%= p('logsearch.metrics.monit.poll') %>
