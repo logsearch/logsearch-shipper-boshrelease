@@ -28,7 +28,7 @@ case $3 in
       --exec /bin/bash \
       --chdir "/var/vcap/jobs/$1" \
       --start \
-      -- -c "/usr/bin/env METRIC_FREQUENCY=<%= p('logsearch.metrics.frequency') %> \"$EXECFILE\" \
+      -- -c "export METRIC_FREQUENCY=<%= p('logsearch.metrics.frequency') %> ; exec \"$EXECFILE\" \
         >> \"$LOGSTDOUT\" \
         2>> \"$LOGSTDERR\" \
       "
