@@ -5,9 +5,9 @@ require 'uri'
 
 STDOUT.sync = true
 
-uri = URI('http://127.0.0.1:2822/_status2?format=xml')
+freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : nil
 
-freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
+uri = URI('http://127.0.0.1:2822/_status2?format=xml')
 
 while true
   req = Net::HTTP::Get.new(uri.request_uri)
@@ -42,6 +42,9 @@ while true
       end
     end
   end
+
+
+  exit if freq.nil?
 
   begin
     sleep(freq)
