@@ -39,6 +39,9 @@ properties:
   logsearch.logs.enabled:
     description: "Whether to enable log forwarding functionality"
     default: true
+  logsearch.logs.director:
+    description: "The name of the BOSH director (not dynamically accessible)"
+    default: "default"
   logsearch.logs.server:
     description: "The upstream server in the format of `host:port`"
   logsearch.logs.ssl_ca_certificate:
@@ -62,6 +65,7 @@ properties:
       files:
         "**/*.log":
           fields:
+            bosh_director: "{{director}}"
             bosh_deployment: "{{deployment}}"
             bosh_job: "{{job}}/{{index}}"
             bosh_template: "{{file_template}}"

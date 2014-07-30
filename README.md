@@ -50,8 +50,8 @@ currently uses the following format:
           {key1}: {value1}
 
 The first configuration source is through manifest properties. You can use the `logsearch.logs._defaults` property to
-define default configuration. By default, all `/var/vcap/sys/log/**/*.log` files are included. As an example, you could
-add the following to your manifest to include the director name on all log messages:
+define default log files and fields (by default, all `/var/vcap/sys/log/**/*.log` files are included). As an example,
+you could add the following to your manifest to tag every log message with a configuration version:
 
     properties:
       logsearch:
@@ -60,7 +60,7 @@ add the following to your manifest to include the director name on all log messa
             ---
             "**/*.log":
               fields:
-                bosh_director: "prod--aws--us-west-1"
+                manifest_version: "b5816e7fb0"
 
 The second configuration source is template-specific configuration files. When starting, the job will look for other
 `/var/vcap/jobs/{template-name}/logsearch/logs.yml` files to load. This allows you to define default fields for all
@@ -86,6 +86,7 @@ name for nginx logs, you might put the following in your manifest:
 
 There are several keywords you can use for dynamic interpolation in field values:
 
+ * `{{director}}` - the director name (as configured by `logsearch.logs.director`)
  * `{{deployment}}` - the deployment name (e.g. `wordpress`)
  * `{{index}}` - the index of the job hosting the processes (e.g. `1`)
  * `{{job}}` - the name of the job hosting the processes (e.g. `webserver`)
@@ -129,6 +130,7 @@ Configuration files and their fields are processed in the following order (you s
 
 There are several configurable properties (in the `logsearch.logs` namespace):
 
+ * `director` - the name of the BOSH director (not dynamically accessible; `string`, default `default`)
  * `enabled` - whether to enable log forwarding functionality (`boolean`, default `true`)
  * `server` - the upstream server in the format of `host:port` (`string`, required)
  * `ssl_ca_certificate` - the upstream SSL certificate to use for authentication (`string`, optional)

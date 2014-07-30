@@ -121,6 +121,7 @@ realconf.each do | path, value |
             fields[field_key] = field_value
         else
             {
+                'director' => '<%= p('logsearch.logs.director') %>',
                 'deployment' => '<%= spec.deployment %>',
                 'index' => '<%= index %>',
                 'job' => '<%= name %>',

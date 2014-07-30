@@ -1,5 +1,5 @@
 {
-  "title": "{{ARGS.director||'????'}}/{{ARGS.deployment||'????'}}/{{ARGS.job||'????'}}",
+  "title": "{{ARGS.director||'default'}}/{{ARGS.deployment||'????'}}/{{ARGS.job||'????'}}",
   "services": {
     "query": {
       "list": {
@@ -301,7 +301,7 @@
         },
         "1": {
           "type": "querystring",
-          "query": "@source.bosh_director:\"{{ARGS.director||'????'}}\"",
+          "query": "@source.bosh_director:\"{{ARGS.director||'default'}}\"",
           "mandate": "must",
           "active": true,
           "alias": "",
