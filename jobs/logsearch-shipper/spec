@@ -29,7 +29,7 @@ templates:
   # meta
   #
   logsearch/logs.yml: "logsearch/logs.yml"
-  logsearch/metrics.yml: "logsearch/metrics.yml"
+  logsearch/metrics.yml.erb: "logsearch/metrics.yml"
   logsearch/metric-collector/monit/collector: "logsearch/metric-collector/monit/collector"
 
 properties:
@@ -121,7 +121,7 @@ properties:
   logsearch.metrics.host.users:
     description: "Gather host user metrics"
     default: true
-  logsearch.metrics.monit.poll:
+  logsearch.metrics.monit:
     description: "Gather monit process metrics"
     default: true
   logsearch.metrics._defaults:

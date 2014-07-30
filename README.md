@@ -183,7 +183,7 @@ A second set of metrics are automatically generated from the monit-managed proce
 
 These metrics are enabled by default and are prefixed with `monit.` and the monit process name (e.g.
 `monit.logsearch-logs.uptime`). If you prefer to disable these metrics, you can set the
-`logsearch.metrics.monit.poll` property to `false`.
+`logsearch.metrics.monit` property to `false`.
 
 The third set of metrics can be created by individual job templates using the following conventions. First, metric
 collectors should be a script which writes to `STDOUT` in the following simple format:
@@ -221,7 +221,7 @@ There are several configurable properties (in the `logsearch.metrics` namespace)
  * `host.processes` - gather host process metrics (`boolean`, default `true`)
  * `host.swap` - gather host swap metrics (`boolean`, default `true`)
  * `host.users` - gather host user metrics (`boolean`, default `true`)
- * `monit.poll` - gather monit process metrics (`boolean`, default `true`)
+ * `monit` - gather monit process metrics (`boolean`, default `true`)
 
 
 ## Additional Notes
