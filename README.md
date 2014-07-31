@@ -150,4 +150,4 @@ own settings, you can disable them with the following:
 
 ## Open Source
 
-[MIT License](./LICENSE)
+[Apache License 2.0](./LICENSE)
