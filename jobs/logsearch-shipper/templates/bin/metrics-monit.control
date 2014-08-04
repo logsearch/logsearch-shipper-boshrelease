@@ -24,6 +24,11 @@ exec 2>&1
 case $1 in
 
   start)
+    # sub-monit takes a moment to start its processes; ensure these files exist
+    # sooner for our log-forwarding peer
+    touch /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.metrics.log
+    touch /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.stderr.log
+
     /var/vcap/jobs/logsearch-shipper/bin/metrics-monit.generate-config > $MONITCONF
     chmod 600 $MONITCONF
 
