@@ -96,7 +96,7 @@ properties:
     default: true
   logsearch.metrics.frequency:
     description: "Check metrics every interval of this number of seconds"
-    default: 300
+    default: 60
   logsearch.metrics.host.cpu:
     description: "Gather host CPU metrics"
     default: true
