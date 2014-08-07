@@ -1,0 +1,54 @@
+#!/var/vcap/bosh/bin/ruby
+
+require 'net/http'
+require 'uri'
+
+STDOUT.sync = true
+
+freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : nil
+
+uri = URI('http://127.0.0.1:2822/_status2?format=xml')
+
+while true
+  req = Net::HTTP::Get.new(uri.request_uri)
+  req.basic_auth 'vcap', 'random-password'
+
+  res = Net::HTTP.start(uri.hostname, uri.port) {|http|
+    http.request(req)
+  }
+
+  ts = Time.now.utc.to_i
+
+  res.body.scan /<service .*?<\/service>/ do | service |
+    service_name = service.gsub(/<service name="([^"]+)">.*<\/service>/, '\1')
+
+    if !service.match /<type>3<\/type>/
+      next
+    end
+
+    service.scan /<(uptime|status|children)>(.*)<\/\1>/ do | match |
+      puts "monit.#{service_name}.#{match[0]} #{match[1]} #{ts}"
+    end
+
+    service.match /<memory>(.*)<\/memory>/ do | memory |
+      memory[0].match /<kilobytetotal>(.*)<\/kilobytetotal>/ do | match |
+        puts "monit.#{service_name}.memory #{1000*match[1].to_i} #{ts}"
+      end
+    end
+
+    service.match /<cpu>(.*)<\/cpu>/ do | cpu |
+      cpu[0].match /<percenttotal>(.*)<\/percenttotal>/ do | match |
+        puts "monit.#{service_name}.cpu #{match[1]} #{ts}"
+      end
+    end
+  end
+
+
+  exit if freq.nil?
+
+  begin
+    sleep(freq)
+  rescue Interrupt => e
+    exit
+  end
+end

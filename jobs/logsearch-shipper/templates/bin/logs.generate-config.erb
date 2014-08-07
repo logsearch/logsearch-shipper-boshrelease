@@ -1,7 +1,6 @@
 #!/var/vcap/bosh/bin/ruby
 
 require 'digest'
-require 'json'
 require 'yaml'
 
 realconf = {}
@@ -50,7 +49,7 @@ baseconf.each do | config |
     end
 end
 
-$stdout.puts "CacheDir /var/vcap/data/logsearch-shipper"
+$stdout.puts "CacheDir /var/vcap/data/logsearch-shipper/logs"
 #$stdout.puts "Group vcap"
 $stdout.puts "PidFile /var/vcap/sys/run/logsearch-shipper/logs.pid"
 #$stdout.puts "User vcap"
@@ -68,11 +67,11 @@ $stdout.puts "  Port <%= hostport[1] %>"
 <% if 'tcp' == p('logsearch.logs.transport') %>
     <% if '' != p('logsearch.logs.ssl_ca_certificate', '') %>
         $stdout.puts "  Module om_ssl"
-        $stdout.puts "  CAFile /var/vcap/jobs/logsearch-shipper/etc/ssl-ca.crt"
+        $stdout.puts "  CAFile /var/vcap/jobs/logsearch-shipper/etc/logs.ssl-ca.crt"
 
         <% if_p('logsearch.logs.ssl_certificate') do %>
-            $stdout.puts "  CertFile /var/vcap/jobs/logsearch-shipper/etc/ssl.crt"
-            $stdout.puts "  CertKeyFile /var/vcap/jobs/logsearch-shipper/etc/ssl.key"
+            $stdout.puts "  CertFile /var/vcap/jobs/logsearch-shipper/etc/logs.ssl.crt"
+            $stdout.puts "  CertKeyFile /var/vcap/jobs/logsearch-shipper/etc/logs.ssl.key"
         <% end %>
     <% else %>
         $stdout.puts "  Module om_tcp"
@@ -118,24 +117,33 @@ realconf.each do | path, value |
             file_template = m[1]
         end
 
-        {
-            'deployment' => '<%= spec.deployment %>',
-            'index' => '<%= index %>',
-            'job' => '<%= name %>',
-            'file_path' => path,
-            'file_template' => file_template
-        }.each do | sub_key, sub_value |
-            field_value = field_value.sub "{{#{sub_key}}}", sub_value
-        end
-
-        if not field_value.nil? and '' != field_value
+        if field_value.nil?
             fields[field_key] = field_value
+        else
+            {
+                'director' => '<%= p('logsearch.logs.director') %>',
+                'deployment' => '<%= spec.deployment %>',
+                'index' => '<%= index %>',
+                'job' => '<%= name %>',
+                'file_path' => path,
+                'file_template' => file_template
+            }.each do | sub_key, sub_value |
+                field_value = field_value.sub "{{#{sub_key}}}", sub_value
+            end
+
+            if '' != field_value
+                fields[field_key] = field_value
+            end
         end
     end
 
     fields.each do | field_key, field_value |
-        field_value = field_value.gsub '"', '\"'
-        $stdout.puts "  Exec $#{field_key} = \"#{field_value}\";"
+        if field_value.nil?
+            $stdout.puts "  Exec $#{field_key} = undef;"
+        else
+            field_value = field_value.gsub '"', '\"'
+            $stdout.puts "  Exec $#{field_key} = \"#{field_value}\";"
+        end
     end
 
     $stdout.puts "</Input>"

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+exec /bin/nc -l 127.0.0.1 2003 \
+  | grep -v ' nan ' \
+  | sed -E -e 's/^collectd\.localhost./host./' -e 's/([^\w])\-/\1_/g' \
+  >> /var/vcap/sys/log/logsearch-shipper/metrics-collectd.metrics.log

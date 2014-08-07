@@ -1,0 +1,67 @@
+#!/bin/bash
+
+set -e
+set -u
+
+PIDFILE=/var/vcap/sys/run/logsearch-shipper/metrics-monit.pid
+LOGDIR=/var/vcap/sys/log/logsearch-shipper
+DATADIR=/var/vcap/data/logsearch-shipper/metrics-monit
+MONITCONF=$DATADIR/monit.conf
+
+mkdir -p `dirname "$PIDFILE"`
+chown vcap:vcap `dirname "$PIDFILE"`
+
+mkdir -p "$LOGDIR"
+chown vcap:vcap "$LOGDIR"
+
+mkdir -p "$DATADIR"
+chown vcap:vcap "$DATADIR"
+
+exec >> /var/vcap/sys/log/logsearch-shipper/metrics-monit.control.log
+exec 2>&1
+
+
+case $1 in
+
+  start)
+    # sub-monit takes a moment to start its processes; ensure these files exist
+    # sooner for our log-forwarding peer
+    touch /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.metrics.log
+    touch /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.stderr.log
+
+    /var/vcap/jobs/logsearch-shipper/bin/metrics-monit.generate-config > $MONITCONF
+    chmod 600 $MONITCONF
+
+    /sbin/start-stop-daemon \
+      --background \
+      --pidfile "$PIDFILE" \
+      --exec /bin/bash \
+      --chdir "$DATADIR" \
+      --start \
+      -- -c "/var/vcap/bosh/bin/monit \
+        -c $MONITCONF \
+        >> \"$LOGDIR/metrics-monit.stdout.log\" \
+        2>> \"$LOGDIR/metrics-monit.stderr.log\" \
+      "
+
+    ;;
+
+  stop)
+    /var/vcap/bosh/bin/monit -c $MONITCONF stop all
+    /sbin/start-stop-daemon \
+      --pidfile "$PIDFILE" \
+      --signal TERM \
+      --oknodo \
+      --stop \
+      --retry 15
+
+    ;;
+
+  *)
+    echo "Usage: control {start|stop}" >&2
+
+    exit 1
+
+    ;;
+
+esac

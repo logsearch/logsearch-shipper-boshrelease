@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# args: job-name collector-name command
+
+set -e
+set -u
+
+PIDFILE="/var/vcap/sys/run/logsearch-shipper/metrics-monit/$2.pid"
+LOGSTDOUT="/var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.metrics.log"
+LOGSTDERR="/var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.stderr.log"
+
+mkdir -p "`dirname $PIDFILE`"
+chown vcap:vcap "`dirname $PIDFILE`"
+
+exec >> /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.control.log
+exec 2>&1
+
+case $1 in
+
+  start)
+    FREQUENCY="$3"
+
+    EXECFILE="$4"
+    chmod +x "$EXECFILE"
+
+    /sbin/start-stop-daemon \
+      --background \
+      --pidfile "$PIDFILE" \
+      --make-pidfile \
+      --exec /bin/bash \
+      --start \
+      -- -c "export METRIC_FREQUENCY=$FREQUENCY ; exec \"$EXECFILE\" \
+        >> \"$LOGSTDOUT\" \
+        2>> \"$LOGSTDERR\" \
+      "
+
+    ;;
+
+  stop)
+    /sbin/start-stop-daemon \
+      --pidfile "$PIDFILE" \
+      --signal INT \
+      --oknodo \
+      --stop \
+      --retry 15
+
+    ;;
+
+  *)
+    echo "Usage: control {start|stop}" >&2
+
+    exit 1
+
+    ;;
+
+esac

@@ -3,9 +3,9 @@
 set -e
 set -u
 
-PIDFILE=/var/vcap/sys/run/logsearch-shipper/logs.control.pid
+PIDFILE=/var/vcap/sys/run/logsearch-shipper/logs.pid
 LOGDIR=/var/vcap/sys/log/logsearch-shipper
-DATADIR=/var/vcap/data/logsearch-shipper
+DATADIR=/var/vcap/data/logsearch-shipper/logs
 
 mkdir -p `dirname "$PIDFILE"`
 chown vcap:vcap `dirname "$PIDFILE"`
@@ -23,11 +23,11 @@ exec 2>&1
 case $1 in
 
   start)
-    <% if_p('plugin.logs.start_delay') do | v | %>
+    <% if_p('logsearch.logs.start_delay') do | v | %>
     sleep <%= v %>
     <% end %>
 
-    /var/vcap/jobs/logsearch-shipper/bin/generate-logs-config > $DATADIR/config.conf
+    /var/vcap/jobs/logsearch-shipper/bin/logs.generate-config > $DATADIR/nxlog.conf
 
     /sbin/start-stop-daemon \
       --background \
@@ -36,7 +36,7 @@ case $1 in
       --chdir "$DATADIR" \
       --start \
       -- -c "/var/vcap/packages/logsearch-nxlog/bin/nxlog \
-        -c config.conf \
+        -c nxlog.conf \
         >> \"$LOGDIR/logs.stdout.log\" \
         2>> \"$LOGDIR/logs.stderr.log\" \
       "

@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -e
+set -u
+
+PIDFILE=/var/vcap/sys/run/logsearch-shipper/metrics-collectd.pid
+LOGDIR=/var/vcap/sys/log/logsearch-shipper
+DATADIR=/var/vcap/data/logsearch-shipper/metrics-collectd
+
+mkdir -p `dirname "$PIDFILE"`
+chown vcap:vcap `dirname "$PIDFILE"`
+
+mkdir -p "$LOGDIR"
+chown vcap:vcap "$LOGDIR"
+
+mkdir -p "$DATADIR"
+chown vcap:vcap "$DATADIR"
+
+exec >> /var/vcap/sys/log/logsearch-shipper/metrics-collectd.control.log
+exec 2>&1
+
+
+case $1 in
+
+  start)
+    /sbin/start-stop-daemon \
+      --background \
+      --pidfile "$PIDFILE" \
+      --exec /bin/bash \
+      --chdir "$DATADIR" \
+      --start \
+      -- -c "export LD_LIBRARY_PATH=/var/vcap/packages/logsearch-collectd/external/python/lib ; \
+        /var/vcap/packages/logsearch-collectd/sbin/collectd \
+        -C /var/vcap/jobs/logsearch-shipper/etc/metrics-collectd.collectd.conf \
+        >> \"$LOGDIR/metrics-collectd.stdout.log\" \
+        2>> \"$LOGDIR/metrics-collectd.stderr.log\" \
+      "
+
+    ;;
+
+  stop)
+    /sbin/start-stop-daemon \
+      --pidfile "$PIDFILE" \
+      --signal INT \
+      --oknodo \
+      --stop \
+      --retry 15
+
+    ;;
+
+  *)
+    echo "Usage: control {start|stop}" >&2
+
+    exit 1
+
+    ;;
+
+esac
