@@ -1,0 +1,21 @@
+---
+packages:
+- name: logsearch-collectd
+  version: f1647001221502d1d5750b5d2f5bd69f07661cc5
+  sha1: 23f8520ebd09e11a9494eacd0c984230413c2011
+  fingerprint: f1647001221502d1d5750b5d2f5bd69f07661cc5
+  dependencies: []
+- name: logsearch-nxlog
+  version: 6201e792fcc172ad0d4035c22f723160c76b6e56
+  sha1: 7340c06fce461e0be95a9c528941505109096eda
+  fingerprint: 6201e792fcc172ad0d4035c22f723160c76b6e56
+  dependencies: []
+jobs:
+- name: logsearch-shipper
+  version: ffd41518d820d233903b548fa263e34f23c72535
+  fingerprint: ffd41518d820d233903b548fa263e34f23c72535
+  sha1: 73d32b7ff5d010774160ba56dab54723c879bd9f
+commit_hash: 88eb3239
+uncommitted_changes: true
+name: logsearch-shipper
+version: '1'
