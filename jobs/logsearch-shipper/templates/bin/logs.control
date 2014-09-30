@@ -36,6 +36,7 @@ case $1 in
       --chdir "$DATADIR" \
       --start \
       -- -c "/var/vcap/packages/logsearch-nxlog/bin/nxlog \
+        -f \
         -c nxlog.conf \
         >> \"$LOGDIR/logs.stdout.log\" \
         2>> \"$LOGDIR/logs.stderr.log\" \
