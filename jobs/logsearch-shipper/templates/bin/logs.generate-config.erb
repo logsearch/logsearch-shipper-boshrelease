@@ -30,7 +30,13 @@ baseconf.each do | config |
             abspath = "/var/vcap/sys/log/#{relpath}"
         end
 
-        Dir.glob(abspath) do | path |
+        if abspath.include? "*"
+            allpath = Dir.glob(abspath)
+        else
+            allpath = [ abspath ]
+        end
+
+        allpath.each do | path |
             if nil == value
                 realconf[path] = nil
             elsif not realconf.has_key?(path) or not realconf[path].nil?
@@ -101,7 +107,8 @@ realconf.each do | path, value |
 
     $stdout.puts "<Input #{pathid}>"
     $stdout.puts "  Module im_file"
-    $stdout.puts "  File \"#{path}\""
+    $stdout.puts "  File \"#{path.gsub(/(.*)(\/)(.*)/, '\1/*\3')}\""
+    $stdout.puts "  DirCheckInterval 60"
     $stdout.puts "  SavePos true"
     $stdout.puts "  InputType LineBased"
     $stdout.puts "  Exec $EventReceivedTime = undef;"
