@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+# usage: manifest-inject [version]
+# about: adds the logsearch-shipper release and job template to all jobs
+# caveats:
+#  * this assumes you'll manage properties.logsearch yourself
+#  * this does not support older manifests which use the single, job[].template notation
+
+require 'yaml'
+
+manifest = YAML.load $stdin
+
+manifest['releases'] << {
+    'name' => 'logsearch-shipper',
+    'version' => ARGV[0] || 'latest'
+}
+
+manifest['jobs'].each do | job |
+    job['templates'] << {
+        'release' => 'logsearch-shipper',
+        'name' => 'logsearch-shipper',
+    }
+end
+
+YAML.dump manifest, $stdout
