@@ -7,7 +7,7 @@ files:
     fields:
       type: "metric"
       path: ~
-  "logsearch-shipper/metrics-monit-runner.metrics.log":
+  "logsearch-shipper/metrics-runner.metrics.log":
     fields:
       type: "metric"
       path: ~
