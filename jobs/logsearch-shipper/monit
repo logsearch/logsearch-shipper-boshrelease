@@ -6,13 +6,8 @@ check process logsearch-logs with pidfile /var/vcap/sys/run/logsearch-shipper/lo
 <% end %>
 
 <% if_p('logsearch.metrics.enabled') do %>
-check process logsearch-metrics-collectd with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-collectd.pid
+check process logsearch-metrics with pidfile /var/vcap/sys/run/logsearch-shipper/metrics.pid
   group vcap
-  start program = "/var/vcap/jobs/logsearch-shipper/bin/metrics-collectd.control start"
-  stop program = "/var/vcap/jobs/logsearch-shipper/bin/metrics-collectd.control stop"
-
-check process logsearch-metrics-monit with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit.pid
-  group vcap
-  start program = "/var/vcap/jobs/logsearch-shipper/bin/metrics-monit.control start"
-  stop program = "/var/vcap/jobs/logsearch-shipper/bin/metrics-monit.control stop"
+  start program = "/var/vcap/jobs/logsearch-shipper/bin/metrics.control start"
+  stop program = "/var/vcap/jobs/logsearch-shipper/bin/metrics.control stop"
 <% end %>

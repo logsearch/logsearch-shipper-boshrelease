@@ -51,10 +51,15 @@ ENDCONF
 <% end %><% end %>
 
 $stdout.puts "set daemon 15"
-$stdout.puts "set logfile /var/vcap/jobs/logsearch-shipper/metrics-monit.log"
-$stdout.puts "set pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit.pid"
+$stdout.puts "set logfile /var/vcap/jobs/logsearch-shipper/metrics.monit.log"
+$stdout.puts "set pidfile /var/vcap/sys/run/logsearch-shipper/metrics.pid"
 $stdout.puts "set httpd port 2922 and use address 127.0.0.1"
 $stdout.puts "  allow cleartext /var/vcap/monit/monit.user"
+$stdout.puts ""
+$stdout.puts "check process collectd with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-collectd.pid"
+$stdout.puts "  group vcap"
+$stdout.puts "  start program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-collectd.control start\""
+$stdout.puts "  stop program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-collectd.control stop\""
 
 if 0 == baseconf.length
     exit
@@ -84,8 +89,8 @@ realconf['collectors'].each do | task_name, task_props |
     end
 
     $stdout.puts ""
-    $stdout.puts "check process #{task_name} with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-monit/#{task_name}.pid"
+    $stdout.puts "check process runner-#{task_name} with pidfile /var/vcap/sys/run/logsearch-shipper/metrics-runner-#{task_name}.pid"
     $stdout.puts "  group vcap"
-    $stdout.puts "  start program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control start #{task_name} #{task_props['frequency']} #{task_props['exec']}\" with timeout #{task_props['frequency']} seconds"
-    $stdout.puts "  stop program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-monit-runner.control stop #{task_name}\""
+    $stdout.puts "  start program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-runner.control start #{task_name} #{task_props['frequency']} #{task_props['exec']}\" with timeout #{task_props['frequency']} seconds"
+    $stdout.puts "  stop program = \"/var/vcap/jobs/logsearch-shipper/bin/metrics-runner.control stop #{task_name}\""
 end

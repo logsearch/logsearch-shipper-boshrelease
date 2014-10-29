@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# args: job-name collector-name command
+# args: command collector-name frequency command
 
 set -e
 set -u
 
-PIDFILE="/var/vcap/sys/run/logsearch-shipper/metrics-monit/$2.pid"
-LOGSTDOUT="/var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.metrics.log"
-LOGSTDERR="/var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.stderr.log"
+PIDFILE="/var/vcap/sys/run/logsearch-shipper/metrics-runner-$2.pid"
+LOGSTDOUT="/var/vcap/sys/log/logsearch-shipper/metrics-runner.metrics.log"
+LOGSTDERR="/var/vcap/sys/log/logsearch-shipper/metrics-runner.stderr.log"
 
 mkdir -p "`dirname $PIDFILE`"
 chown vcap:vcap "`dirname $PIDFILE`"
 
-exec >> /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.control.log
+exec >> /var/vcap/sys/log/logsearch-shipper/metrics-runner.control.log
 exec 2>&1
 
 case $1 in

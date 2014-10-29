@@ -3,9 +3,9 @@
 set -e
 set -u
 
-PIDFILE=/var/vcap/sys/run/logsearch-shipper/metrics-monit.pid
+PIDFILE=/var/vcap/sys/run/logsearch-shipper/metrics.pid
 LOGDIR=/var/vcap/sys/log/logsearch-shipper
-DATADIR=/var/vcap/data/logsearch-shipper/metrics-monit
+DATADIR=/var/vcap/data/logsearch-shipper/metrics
 MONITCONF=$DATADIR/monit.conf
 
 mkdir -p `dirname "$PIDFILE"`
@@ -17,7 +17,7 @@ chown vcap:vcap "$LOGDIR"
 mkdir -p "$DATADIR"
 chown vcap:vcap "$DATADIR"
 
-exec >> /var/vcap/sys/log/logsearch-shipper/metrics-monit.control.log
+exec >> /var/vcap/sys/log/logsearch-shipper/metrics.control.log
 exec 2>&1
 
 
@@ -26,10 +26,10 @@ case $1 in
   start)
     # sub-monit takes a moment to start its processes; ensure these files exist
     # sooner for our log-forwarding peer
-    touch /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.metrics.log
-    touch /var/vcap/sys/log/logsearch-shipper/metrics-monit-runner.stderr.log
+    touch /var/vcap/sys/log/logsearch-shipper/metrics-runner.metrics.log
+    touch /var/vcap/sys/log/logsearch-shipper/metrics-runner.stderr.log
 
-    /var/vcap/jobs/logsearch-shipper/bin/metrics-monit.generate-config > $MONITCONF
+    /var/vcap/jobs/logsearch-shipper/bin/metrics.generate-config > $MONITCONF
     chmod 600 $MONITCONF
 
     /sbin/start-stop-daemon \
@@ -40,8 +40,8 @@ case $1 in
       --start \
       -- -c "/var/vcap/bosh/bin/monit \
         -c $MONITCONF \
-        >> \"$LOGDIR/metrics-monit.stdout.log\" \
-        2>> \"$LOGDIR/metrics-monit.stderr.log\" \
+        >> \"$LOGDIR/metrics.stdout.log\" \
+        2>> \"$LOGDIR/metrics.stderr.log\" \
       "
 
     ;;

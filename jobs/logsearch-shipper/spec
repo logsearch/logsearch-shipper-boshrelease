@@ -20,10 +20,10 @@ templates:
   #
   bin/metrics-collectd.control: "bin/metrics-collectd.control"
   bin/metrics-collectd.graphite-mock: "bin/metrics-collectd.graphite-mock"
-  bin/metrics-monit.control: "bin/metrics-monit.control"
-  bin/metrics-monit-runner.control.erb: "bin/metrics-monit-runner.control"
-  bin/metrics-monit.generate-config.erb: "bin/metrics-monit.generate-config"
-  etc/metrics-collectd.collectd.conf.erb: "etc/metrics-collectd.collectd.conf"
+  bin/metrics.control: "bin/metrics.control"
+  bin/metrics.generate-config.erb: "bin/metrics.generate-config"
+  bin/metrics-runner.control.erb: "bin/metrics-runner.control"
+  etc/metrics-collectd.conf.erb: "etc/metrics-collectd.conf"
 
   #
   # meta

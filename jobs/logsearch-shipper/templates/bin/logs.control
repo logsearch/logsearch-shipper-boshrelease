@@ -23,23 +23,21 @@ exec 2>&1
 case $1 in
 
   start)
-    <% if_p('logsearch.logs.start_delay') do | v | %>
-    sleep <%= v %>
-    <% end %>
-
-    /var/vcap/jobs/logsearch-shipper/bin/logs.generate-config > $DATADIR/nxlog.conf
 
     /sbin/start-stop-daemon \
-      --background \
       --pidfile $PIDFILE \
+      --make-pidfile \
       --exec /bin/bash \
       --chdir "$DATADIR" \
       --start \
-      -- -c "/var/vcap/packages/logsearch-nxlog/bin/nxlog \
-        -f \
-        -c nxlog.conf \
-        >> \"$LOGDIR/logs.stdout.log\" \
-        2>> \"$LOGDIR/logs.stderr.log\" \
+      -- -c "set -e && \
+        <% if_p('logsearch.logs.start_delay') do | v | %>sleep <%= v %><% end %> && \
+        /var/vcap/jobs/logsearch-shipper/bin/logs.generate-config > $DATADIR/nxlog.conf && \
+        exec /var/vcap/packages/logsearch-nxlog/bin/nxlog \
+          -f \
+          -c nxlog.conf \
+          >> \"$LOGDIR/logs.stdout.log\" \
+          2>> \"$LOGDIR/logs.stderr.log\" \
       "
 
     ;;
