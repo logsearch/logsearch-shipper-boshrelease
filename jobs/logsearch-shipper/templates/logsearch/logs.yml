@@ -1,7 +1,8 @@
 ---
 files:
-  # logging about our own logs can cause recursions
+  # disable forwarding our own log-forwarding logs to avoid recursions
   "logsearch-shipper/logs.*.log": ~
+  # include our metrics; exclude path since it's excess data
   "logsearch-shipper/metrics-collectd.metrics.log":
     fields:
       type: "metric"

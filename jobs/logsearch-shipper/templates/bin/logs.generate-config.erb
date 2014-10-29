@@ -58,6 +58,7 @@ end
 $stdout.puts "CacheDir /var/vcap/data/logsearch-shipper/logs"
 #$stdout.puts "Group vcap"
 $stdout.puts "PidFile /var/vcap/sys/run/logsearch-shipper/logs.pid"
+$stdout.puts "LogFile /var/vcap/sys/log/logsearch-shipper/logs.nxlog.log"
 #$stdout.puts "User vcap"
 
 $stdout.puts "<Extension syslog>"
@@ -107,8 +108,7 @@ realconf.each do | path, value |
 
     $stdout.puts "<Input #{pathid}>"
     $stdout.puts "  Module im_file"
-    $stdout.puts "  File \"#{path.gsub(/(.*)(\/)(.*)/, '\1/*\3')}\""
-    $stdout.puts "  DirCheckInterval 60"
+    $stdout.puts "  File \"#{path}\""
     $stdout.puts "  SavePos true"
     $stdout.puts "  InputType LineBased"
     $stdout.puts "  Exec $EventReceivedTime = undef;"
