@@ -137,7 +137,7 @@ There are several configurable properties (in the `logsearch.logs` namespace):
  * `ssl_ca_certificate` - the upstream SSL certificate to use for authentication (`string`, optional)
  * `ssl_certificate` - a SSL certificate to use for authentication (`string`, optional)
  * `ssl_key` - a SSL key to use for authentication (`string`, optional)
- * `start_delay` - delay startup commands by this number of seconds to help catch newly-created logs (`integer`, default `10`)
+ * `start_delay` - delay startup commands by this number of seconds to help catch newly-created logs (`integer`, default `60`)
  * `transport` - transport to use with upstream server (tcp|udp) (`string`, default `tcp`)
  * `_defaults` - default log forwarding YAML configuration applied to all forwarders (`string`, optional)
  * `_overrides` - override template configuration applied to all forwarded files (`string`, optional)
@@ -265,7 +265,7 @@ easiest way to import them into kibana is with an elasticsearch curl request lik
 
 The following sample dashboards are available:
 
- * [`metrics-job.json`](./share/kibana-dashboards/metrics-job.json`) - shows standard host metrics (e.g. load, network,
+ * [`metrics-job.json`](./share/kibana-dashboards/metrics-job.json) - shows standard host metrics (e.g. load, network,
    disks). It requires the `director`, `deployment`, and `job` query arguments.
 
 
