@@ -30,6 +30,25 @@ Update your deployment manifest to add the release, add the templates, and add y
         logs:
           server: "192.0.2.1:5514"
 
+Ensure your logsearch deployment includes the parser rule for the metrics that logsearch-shipper sends:
+
+    if [@type] == "metric" {
+        grok {
+            match => [ "@message", "%{NOTSPACE:name} %{NUMBER:value:float} %{INT:timestamp}" ]
+            tag_on_failure => [ "fail/metric" ]
+            add_tag => [ "metric" ]
+            remove_tag => "raw"
+            remove_field => [ "@message" ]
+        }
+
+        if "metric" in [tags] {
+            date {
+                match => [ "timestamp", "UNIX" ]
+                remove_field => "timestamp"
+            }
+        }
+    }
+
 Deploy your changes...
 
     $ bosh deploy
