@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+set -u
+
+EXECDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
+
+export RELEASE_DIR=$( realpath "${RELEASE_DIR:-release}" )
+
+cd "${RELEASE_DIR}"
+
+mkdir logsearch-config
+mkdir logsearch-config/logs
+
+
+echo '==> Generating logstash filters...'
+
+mkdir logsearch-config/logs/logstash-filters
+"${EXECDIR}/logs/logstash-filters/enumerate" --active > logsearch-config/logs/logstash-filters.txt
+cat logsearch-config/logs/logstash-filters.txt | "${EXECDIR}/logs/logstash-filters/copy" logsearch-config/logs/logstash-filters
+cat logsearch-config/logs/logstash-filters.txt | "${EXECDIR}/logs/logstash-filters/collect" > logsearch-config/logs/logstash-filters.conf
+
+
+echo '==> Generating elasticsearch mappings...'
+
+mkdir logsearch-config/logs/elasticsearch-mappings
+"${EXECDIR}/logs/elasticsearch-mappings/enumerate" --active > logsearch-config/logs/elasticsearch-mappings.txt
+cat logsearch-config/logs/elasticsearch-mappings.txt | "${EXECDIR}/logs/elasticsearch-mappings/copy" logsearch-config/logs/elasticsearch-mappings
+cat logsearch-config/logs/elasticsearch-mappings.txt | "${EXECDIR}/logs/elasticsearch-mappings/collect" > logsearch-config/logs/elasticsearch-mappings.conf
+
+
+echo '==> Compressing results...'
+
+tar -czf logsearch-config.tgz logsearch-config

@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+prefix = ""
+
+$stdin.each_line do | line |
+  line = line.rstrip.split("\t", 2)
+  
+  puts "#{prefix}if '#{line[0]}' == [@type] {"
+  puts File.read(line[1]).gsub(/^/, '  ')
+  puts "}"
+  
+  prefix = "else"
+end
+

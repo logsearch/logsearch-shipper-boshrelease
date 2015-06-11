@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+mapping = JSON.load('
+{
+  "template" : "logstash-*",
+  "order" : 50,
+  "mappings": {
+    "_default_": {
+      "properties" : {
+        "@timestamp" : {
+          "type" : "datetime",
+          "index" : "not_analyzed"
+        },
+        "@type" : {
+          "store" : false
+        }
+      }
+    }
+  }
+}
+')
+
+$stdin.each_line do | line |
+  line = line.rstrip.split(' ', 2)
+
+  mapping['mappings'][line[0]] = JSON.load(File.read(line[1]))
+end
+
+$stdout.puts JSON.pretty_generate(mapping)
+

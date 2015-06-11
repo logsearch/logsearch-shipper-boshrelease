@@ -1,0 +1,7 @@
+---
+platform: "linux"
+image: "docker:///dpb587/logsearch-shipper-release-utils"
+inputs:
+  - name: "create-release"
+run:
+  path: "create-release/repo/ci/tasks/append-logsearch-config/run.sh"
