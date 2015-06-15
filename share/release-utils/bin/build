@@ -19,6 +19,7 @@ mkdir logsearch-config/logs/logstash-filters
 "${EXECDIR}/logs/logstash-filters/enumerate" --active > logsearch-config/logs/logstash-filters.txt
 cat logsearch-config/logs/logstash-filters.txt | "${EXECDIR}/logs/logstash-filters/copy" logsearch-config/logs/logstash-filters
 cat logsearch-config/logs/logstash-filters.txt | "${EXECDIR}/logs/logstash-filters/collect" > logsearch-config/logs/logstash-filters.conf
+rm logsearch-config/logs/logstash-filters.txt
 
 
 echo '==> Generating elasticsearch mappings...'
@@ -27,6 +28,7 @@ mkdir logsearch-config/logs/elasticsearch-mappings
 "${EXECDIR}/logs/elasticsearch-mappings/enumerate" --active > logsearch-config/logs/elasticsearch-mappings.txt
 cat logsearch-config/logs/elasticsearch-mappings.txt | "${EXECDIR}/logs/elasticsearch-mappings/copy" logsearch-config/logs/elasticsearch-mappings
 cat logsearch-config/logs/elasticsearch-mappings.txt | "${EXECDIR}/logs/elasticsearch-mappings/collect" > logsearch-config/logs/elasticsearch-mappings.conf
+rm logsearch-config/logs/elasticsearch-mappings.txt
 
 
 echo '==> Compressing results...'
