@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+set -u
+
+EXECDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PATH="${EXECDIR}:$PATH"
+
+export RELEASE_DIR=$( realpath "${RELEASE_DIR:-release}" )
+
+cd /usr/local/logstash
+
+
+echo '==> Running tests...'
+
+./bin/rspec "${EXECDIR}/../logs/logstash-filters/spec.rb" $( find "${RELEASE_DIR}/jobs" -name *spec.rb | grep '/logsearch/' )

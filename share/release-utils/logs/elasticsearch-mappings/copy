@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+set -u
+
+TARGET_DIR="${1}"
+
+while read LINE ; do
+  IFS=$'\t' read -a COLS <<< "${LINE}"
+
+  cp "${COLS[1]}" "${TARGET_DIR}/${COLS[0]}.json"
+done
