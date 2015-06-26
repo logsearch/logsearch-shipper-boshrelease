@@ -254,6 +254,42 @@
           "type": "lucene",
           "enable": true,
           "query": "_type:\"metric\" AND name:\"host.disk_xvdf1.disk_octets.write\""
+        },
+        "28": {
+          "id": 28,
+          "color": "#E24D42",
+          "alias": "In",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:metric AND name:\"host.swap.swap_io_in\""
+        },
+        "29": {
+          "id": 29,
+          "color": "#1F78C1",
+          "alias": "Out",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:metric AND name:\"host.swap.swap_io_out\""
+        },
+        "30": {
+          "id": 30,
+          "color": "#E24D42",
+          "alias": "Received",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.interface_lo.if_octets.rx\""
+        },
+        "31": {
+          "id": 31,
+          "color": "#1F78C1",
+          "alias": "Sent",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:\"metric\" AND name:\"host.interface_lo.if_octets.tx\""
         }
       },
       "ids": [
@@ -284,7 +320,11 @@
         24,
         25,
         26,
-        27
+        27,
+        28,
+        29,
+        30,
+        31
       ]
     },
     "filter": {
@@ -418,166 +458,6 @@
         {
           "span": 6,
           "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
-          "time_field": "@timestamp",
-          "value_field": "value",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "bytes",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              7,
-              8,
-              9,
-              10
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 60,
-          "interval": "1m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 2,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": true,
-          "spyable": true,
-          "zoomlinks": false,
-          "options": false,
-          "legend": true,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": false,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "individual",
-            "query_as_alias": true
-          },
-          "title": "Memory"
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "Network",
-      "height": "160px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "span": 6,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "total",
-          "time_field": "@timestamp",
-          "value_field": "value",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "bytes",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              11,
-              12
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 60,
-          "interval": "1m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": false,
-          "options": false,
-          "legend": true,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": false,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "individual",
-            "query_as_alias": true
-          },
-          "title": "Network"
-        },
-        {
-          "span": 6,
-          "editable": true,
           "group": [
             "default"
           ],
@@ -660,7 +540,325 @@
       "notice": false
     },
     {
-      "title": "Disks",
+      "title": "Memory",
+      "height": "160px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "bytes",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Memory"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              28,
+              29
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": true,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Swap"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Network",
+      "height": "160px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "max",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "bytes",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              11,
+              12
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": true,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "eth0"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "max",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "bytes",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              30,
+              31
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 60,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": true,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": true,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "lo"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Disk Usage",
       "height": "160px",
       "editable": true,
       "collapse": false,
@@ -892,7 +1090,7 @@
       "notice": false
     },
     {
-      "title": "Disks",
+      "title": "Disk Activity",
       "height": "160px",
       "editable": true,
       "collapse": false,
@@ -1127,8 +1325,8 @@
   "editable": true,
   "failover": false,
   "index": {
-    "interval": "day",
-    "pattern": "[logstash-]YYYY.MM.DD",
+    "interval": "week",
+    "pattern": "[logstash-]YYYY-WW",
     "default": "NO_TIME_FILTER_OR_INDEX_PATTERN_NOT_MATCHED",
     "warm_fields": true
   },
@@ -1143,13 +1341,13 @@
       "pinned": true,
       "history": [],
       "remember": 10,
-      "enable": false
+      "enable": true
     },
     {
       "type": "filtering",
       "collapse": true,
       "notice": true,
-      "enable": false
+      "enable": true
     }
   ],
   "nav": [
