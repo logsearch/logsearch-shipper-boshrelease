@@ -14,7 +14,9 @@ ARGV.each do | argv |
       logyaml = YAML.load_file(logfile)
 
       logyaml['files'].each do | joblogfile, joblogconfig |
-        if !joblogconfig.has_key? 'fields' or !joblogconfig['fields'].has_key? 'type'
+        if nil == joblogconfig
+          next
+        elsif !joblogconfig.has_key? 'fields' or !joblogconfig['fields'].has_key? 'type'
           $stderr.puts "WARNING: #{joblogfile} from job #{job_name} does not define a type field"
  
           next

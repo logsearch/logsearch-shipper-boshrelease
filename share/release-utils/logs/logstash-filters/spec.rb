@@ -15,6 +15,7 @@ Dir.glob("#{ENV['RELEASE_DIR']}/jobs/**/logsearch/logs/*/expected.testdata").eac
     
       sample('@message' => split[0]) do
         subject.remove "@version"
+        subject.remove "tags" if [] === subject['tags']
 
         expected.each do | k, v |
           if "@timestamp" == k
