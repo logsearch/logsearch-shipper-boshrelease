@@ -1,7 +1,7 @@
+/**/*.tgz
 /.blobs
 /.bosh_config
 /.dev_builds
-/.final_builds/**/*.tgz
 /.ruby-version
 /blobs
 /config/dev.yml
