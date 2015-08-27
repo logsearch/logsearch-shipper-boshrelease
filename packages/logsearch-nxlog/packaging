@@ -9,76 +9,45 @@ CPUS=$(grep -c ^processor /proc/cpuinfo)
 
 
 tar -xzf source/apr-1.5.1.tar.gz
-tar -xzf source/expat-2.1.0.tar.gz
-tar -xzf source/nxlog-ce-2.8.1248.tar.gz
 tar -xzf source/openssl-1.0.1h.tar.gz
-tar -xzf source/pcre-8.35.tar.gz
 
 
-pushd apr-1.5.1
+( cd apr-1.5.1
 
-./configure \
-  --prefix=${BOSH_INSTALL_TARGET}/external/apr
+  ./configure \
+    --prefix=${BOSH_INSTALL_TARGET}/external/apr
 
-make -j${CPUS}
-make install
+  make -j${CPUS}
+  make install
 
-popd
-
-
-pushd expat-2.1.0
-
-./configure \
-  --prefix=${BOSH_INSTALL_TARGET}/external/expat
-
-make -j${CPUS}
-make install
-
-popd
+)
 
 
-pushd openssl-1.0.1h
+( cd openssl-1.0.1h
 
-./config \
-  -DSSL_ALLOW_ADH \
-  --shared \
-  --prefix=${BOSH_INSTALL_TARGET}/external/openssl \
-  --openssldir=${BOSH_INSTALL_TARGET}/external/openssldir
+  ./config \
+    -DSSL_ALLOW_ADH \
+    --shared \
+    --prefix=${BOSH_INSTALL_TARGET}/external/openssl \
+    --openssldir=${BOSH_INSTALL_TARGET}/external/openssldir
 
-make
-make install
+  make
+  make install
 
-popd
-
-
-pushd pcre-8.35
-
-./configure \
-  --prefix=${BOSH_INSTALL_TARGET}/external/pcre \
-  --enable-utf
-
-make -j${CPUS}
-make install
-
-popd
+)
 
 
-pushd nxlog-ce-2.8.1248
+dpkg -x source/nxlog-ce_2.9.1347_ubuntu_1404_amd64.deb $BOSH_INSTALL_TARGET
 
-export APRCONFIG="${BOSH_INSTALL_TARGET}/external/apr/bin/apr-1-config"
-export PCRECONFIG="${BOSH_INSTALL_TARGET}/external/pcre/bin/pcre-config"
-export CPPFLAGS="-I${PWD}/../expat-2.1.0/lib -I${BOSH_INSTALL_TARGET}/external/openssl/include -I${PWD}/../pcre-8.35"
-export LDFLAGS="-L${BOSH_INSTALL_TARGET}/external/expat/lib -L${BOSH_INSTALL_TARGET}/external/openssl/lib"
+mkdir $BOSH_INSTALL_TARGET/bin
 
-./configure \
-  --prefix=${BOSH_INSTALL_TARGET}
+cat > $BOSH_INSTALL_TARGET/bin/nxlog <<'EOF'
+#!/bin/sh
 
-make -j${CPUS}
-make install
+export PATH="/var/vcap/packages/logsearch-nxlog/usr/bin:$PATH"
+export LD_LIBRARY_PATH="/var/vcap/packages/logsearch-nxlog/external/apr/lib:/var/vcap/packages/logsearch-nxlog/external/openssl/lib:${LD_LIBRARY_PATH:-}"
 
-unset LDFLAGS
-unset CPPFLAGS
-unset PCRECONFIG
-unset APRCONFIG
+exec nxlog $@
+EOF
 
-popd
+chmod +x $BOSH_INSTALL_TARGET/bin/nxlog
