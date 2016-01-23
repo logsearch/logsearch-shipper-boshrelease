@@ -3,7 +3,9 @@
 require 'spec_helper'
 require 'json'
 
-Dir.glob("#{ENV['RELEASE_DIR']}/jobs/**/logsearch/logs/*/expected.testdata").each do | path |
+Dir.glob("#{ENV['RELEASE_DIR']}/jobs/**/logsearch/logs/*/expected.testdata")
+.concat(Dir.glob("#{ENV['RELEASE_DIR']}/src/logsearch-config/logs/*/expected.testdata"))
+.each do | path |
   describe File.dirname(path) do
     config 'filter {' + File.read("#{File.dirname(path)}/logstash-filters.conf") + '}'
 

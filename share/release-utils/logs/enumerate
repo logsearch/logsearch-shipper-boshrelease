@@ -1,0 +1,105 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+
+release_name = YAML.load_file('config/final.yml')['final_name']
+
+#
+# naive command line parsing
+#
+
+filetype = nil
+verbosity = 2
+showmode = '--active'
+aliases = {}
+
+confs = {}
+globalconfs = []
+showconfs = []
+
+ARGV.each do | argv |
+  if [ '--active', '--all' ].include? argv
+    showmode = argv
+  elsif '-q' == argv
+    verbosity -= 1
+  elsif argv.include? '='
+    split = argv.split('=', 2)
+
+    if '' == split[1]
+      showconfs.push split[0]
+    elsif File.exists? split[1]
+      confs[split[0]] = File.realpath(split[1])
+    else
+      $stderr.puts "WARNING: #{split[1]} passed in argument but not found on filesystem"
+    end
+  else
+    filetype = argv
+  end
+end
+
+if nil == filetype
+  $stderr.puts "ERROR: a file type to enumerate is required as an argument" if verbosity > 0
+  
+  exit 1
+end
+
+#
+# enumerate all the available files
+#
+
+Dir.glob("jobs/**/logsearch/logs/*/#{filetype}")
+.concat(Dir.glob("src/logsearch-config/logs/*/#{filetype}"))
+.each do | joblogconf |
+  log_name = File.basename(File.dirname(joblogconf))
+  job_name = File.basename(File.dirname(File.dirname(File.dirname(File.dirname(joblogconf)))))
+
+  name = "#{release_name}-#{job_name}-#{log_name}"
+  overridename = "#{File.dirname(joblogconf)}/name"
+
+  if File.exists? overridename
+    name = File.read(overridename).strip
+  end
+
+  if !confs.has_key?(name)
+    confs[name] = File.realpath(joblogconf)
+    globalconfs.push(name) if joblogconf.match(/^src/)
+  end
+end
+
+#
+# now filter reduce to what they want to see
+#
+
+if '--active' == showmode
+  Dir.glob("jobs/**/templates/logsearch/logs.yml").each do | logfile |
+    job_name = File.basename(File.dirname(File.dirname(File.dirname(logfile))))
+
+    logyaml = YAML.load_file(logfile)
+
+    logyaml['files'].each do | joblogfile, joblogconfig |
+      if nil == joblogconfig
+        next
+      elsif !joblogconfig.has_key? 'fields' or !joblogconfig['fields'].has_key? 'type'
+        $stderr.puts "WARNING: #{joblogfile} from job #{job_name} does not define a type field" if verbosity > 1
+
+        next
+      elsif !confs.has_key? joblogconfig['fields']['type']
+        $stderr.puts "WARNING: #{joblogfile} from job #{job_name} is typed #{joblogconfig['fields']['type']} which is not defined here" if verbosity > 1
+        
+        next
+      end
+      
+      showconfs.push joblogconfig['fields']['type']
+    end
+  end
+else
+  showconfs = confs.keys
+end
+
+#
+# show them
+#
+
+showconfs.each do | name |
+  $stdout.puts "#{name}\t#{confs[name]}"
+end
