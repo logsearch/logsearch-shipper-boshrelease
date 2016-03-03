@@ -1,11 +1,11 @@
-<% if_p('logsearch.logs.enabled') do %>
+<% if p('logsearch.logs.enabled') %>
 check process logsearch-logs with pidfile /var/vcap/sys/run/logsearch-shipper/logs.pid
   group vcap
   start program = "/var/vcap/jobs/logsearch-shipper/bin/logs.control start"
   stop program = "/var/vcap/jobs/logsearch-shipper/bin/logs.control stop"
 <% end %>
 
-<% if_p('logsearch.metrics.enabled') do %>
+<% if p('logsearch.metrics.enabled') %>
 check process logsearch-metrics with pidfile /var/vcap/sys/run/logsearch-shipper/metrics.pid
   group vcap
   start program = "/var/vcap/jobs/logsearch-shipper/bin/metrics.control start"
