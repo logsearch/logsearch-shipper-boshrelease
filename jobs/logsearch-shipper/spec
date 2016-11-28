@@ -4,6 +4,7 @@ name: "logsearch-shipper"
 packages:
   - "logsearch-collectd"
   - "logsearch-nxlog"
+  - "logsearch-ruby"
 
 templates:
   #

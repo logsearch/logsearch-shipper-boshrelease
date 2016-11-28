@@ -1,17 +1,22 @@
----
 source/apr-1.5.1.tar.gz:
+  size: 1020833
   object_id: 6b6b4ae6-fbe6-44a4-8c1f-4141818a06c8
   sha: 9caa83e3f50f3abc9fab7c4a3f2739a12b14c3a3
-  size: 1020833
-source/openssl-1.0.1h.tar.gz:
-  object_id: 9e3cb9c8-0547-4f59-acac-509c4c22f2de
-  sha: b2239599c8bf8f7fc48590a55205c26abe560bf8
-  size: 4475692
 source/collectd-5.4.1.tar.gz:
+  size: 1894132
   object_id: a5d77875-63bf-46d9-bf78-21b5b102491f
   sha: faaccac4daf48449bcefc9d6f9236f98a5dd5b4b
-  size: 1894132
 source/nxlog-ce_2.9.1347_ubuntu_1404_amd64.deb:
+  size: 1520716
   object_id: 24ec0add-7a46-4c62-aada-26de4a2e493a
   sha: 3751854f76b34b19fac29b292a3d2edb01a769ca
-  size: 1520716
+source/openssl-1.0.1h.tar.gz:
+  size: 4475692
+  object_id: 9e3cb9c8-0547-4f59-acac-509c4c22f2de
+  sha: b2239599c8bf8f7fc48590a55205c26abe560bf8
+source/ruby-1.9.3-p545.tar.gz:
+  size: 12582277
+  sha: 03455364740914e8d2dfd6421f681b3fb68a4313
+source/yaml-0.1.6.tar.gz:
+  size: 503012
+  sha: f3d404e11bec3c4efcddfd14c42d46f1aabe0b5d

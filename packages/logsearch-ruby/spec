@@ -1,0 +1,7 @@
+---
+name: "logsearch-ruby"
+files:
+  # https://github.com/cloudfoundry/bosh/blob/stable-3263.10/stemcell_builder/stages/bosh_ruby/assets/yaml-0.1.6.tar.gz
+  - "source/yaml-0.1.6.tar.gz"
+  # https://github.com/cloudfoundry/bosh/blob/stable-3263.10/stemcell_builder/stages/bosh_ruby/assets/ruby-1.9.3-p545.tar.gz
+  - "source/ruby-1.9.3-p545.tar.gz"
